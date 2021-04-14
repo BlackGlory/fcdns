@@ -3,11 +3,12 @@ import { program } from 'commander'
 import { buildServer } from './server'
 import { Router } from './router'
 import { Whitelist } from './whitelist'
-import { createLogger, Level } from 'extra-logger'
 import { Tester } from './tester'
 import { createDNSResolver } from '@utils/create-dns-resolver'
 import { parseLogLevel } from '@utils/parse-log-level'
 import { assert } from '@blackglory/errors'
+import { createRouteLogger } from './logger'
+import { Level } from 'extra-logger'
 
 program
   .name(require('../package.json').name)
@@ -49,7 +50,7 @@ program
     const untrustedResolver = createDNSResolver(untrustedServer)
     const trustedResolver = createDNSResolver(trustedServer)
     const whitelist = await new Whitelist(whitelistFilename)
-    const logger = createLogger(logLevel)
+    const logger = createRouteLogger(logLevel)
     const resolver = await new Router({
       tester
     , untrustedResolver

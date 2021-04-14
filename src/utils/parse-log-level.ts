@@ -1,7 +1,7 @@
 import { Level } from 'extra-logger'
 
 export function parseLogLevel(level: string): Level {
-  switch (level) {
+  switch (level.toLowerCase()) {
     case 'trace': return Level.Trace
     case 'debug': return Level.Debug
     case 'info': return Level.Info

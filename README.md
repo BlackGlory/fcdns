@@ -10,6 +10,16 @@ npm install --global fcdns
 yarn global add fcdns
 ```
 
+### Install from source
+
+```sh
+git clone git@github.com:BlackGlory/fcdns.git
+cd fcdns
+yarn install
+yarn build
+yarn global add "file:$(pwd)"
+```
+
 ## Usage
 
 ```sh

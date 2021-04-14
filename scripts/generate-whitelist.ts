@@ -1,9 +1,13 @@
-import { downloadLatestStatisticsFile, parseStatisticsFile, isRecord, IRecord, Domain, Registry } from 'internet-number'
+import {
+  downloadLatestStatisticsFile
+, parseStatisticsFile
+, isRecord, IRecord, Domain, Registry
+} from 'internet-number'
 import { withFile } from 'tmp-promise'
 import { AsyncIterableOperator } from 'iterable-operator/lib/es2018/style/chaining/async-iterable-operator'
 import { IPv4AddressRange, IPv6AddressRange, compress } from 'address-range'
 import { go } from '@blackglory/go'
-import { writeAddressRangesFile } from '@src/address-ranges-file'
+import { writeAddressRangesFile } from '../src/utils/address-ranges-file'
 
 go(async () => {
   const ranges = await withFile(async ({ path: filename }) => {
