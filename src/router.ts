@@ -56,7 +56,8 @@ export class Router extends AsyncConstructor {
 
     const [err, records] = await getErrorResultAsync(async () => {
       if (this.route.has(hostname)) {
-        switch (this.route.get(hostname)!) {
+        const kind = this.route.get(hostname)!
+        switch (kind) {
           case Kind.Untrusted:
             this.logger.debug(message('Hit the route cache (untrusted server)'))
             return await this.resolveAByUntrustedDNS(id, hostname)
@@ -65,7 +66,7 @@ export class Router extends AsyncConstructor {
             return await this.resolveAByTrustedDNS(id, hostname)
         }
       } else {
-        const startTime = Date.now()
+        const startTime = getTimestamp()
         if (await this.tester.isPoisoned(hostname)) {
           this.logger.debug(message(chalk.magenta`Poisoned`, startTime))
           this.cache(hostname, Kind.Trusted)
@@ -75,8 +76,7 @@ export class Router extends AsyncConstructor {
           const records = await this.resolveAByUntrustedDNS(id, hostname)
           if (records.length > 0) {
             const startTime = getTimestamp()
-            const inWhitelist = records.some(x => this.whitelist.includes(x.address))
-            if (inWhitelist) {
+            if (this.inWhitelist(records)) {
               this.logger.debug(message('In the whitelist', startTime))
               this.cache(hostname, Kind.Untrusted)
               return records
@@ -136,6 +136,10 @@ export class Router extends AsyncConstructor {
       , elapsed: getElapsed(startTime)
       }
     }
+  }
+
+  private inWhitelist(records: RecordWithTtl[]): boolean {
+    return records.some(x => this.whitelist.includes(x.address))
   }
 
   private cache(domain: string, result: Kind): void {

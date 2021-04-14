@@ -24,43 +24,58 @@ program
   .option('--test-timeout <ms>', '', '200')
   .option('--log <level>', '', 'info')
   .action(async () => {
-    const opts = program.opts()
-
-    const testServer: string = opts.testServer
-    const untrustedServer: string = opts.untrustedServer
-    const trustedServer: string = opts.trustedServer
-
-    assert(/^\d+$/.test(opts.port), 'The parameter port must be integer')
-    const port: number = Number.parseInt(opts.port, 10)
-
-    const whitelistFilename: string = opts.whitelist
-    const routeCacheFilename: string = opts.routeCache
-    const testCacheFilename: string = opts.testCache
-
-    assert(/^\d+$/.test(opts.testTimeout), 'The parameter test timeout must be integer')
-    const testTimeout = Number.parseInt(opts.testTimeout, 10)
-
-    const logLevel: Level = parseLogLevel(opts.log)
-
+    const options = getOptions()
     const tester = await new Tester({
-      server: testServer
-    , timeout: testTimeout
-    , cacheFilename: testCacheFilename
+      server: options.testServer
+    , timeout: options.testTimeout
+    , cacheFilename: options.testCacheFilename
     })
-    const untrustedResolver = createDNSResolver(untrustedServer)
-    const trustedResolver = createDNSResolver(trustedServer)
-    const whitelist = await new Whitelist(whitelistFilename)
-    const logger = createRouteLogger(logLevel)
+    const untrustedResolver = createDNSResolver(options.untrustedServer)
+    const trustedResolver = createDNSResolver(options.trustedServer)
+    const whitelist = await new Whitelist(options.whitelistFilename)
+    const logger = createRouteLogger(options.logLevel)
     const resolver = await new Router({
       tester
     , untrustedResolver
     , trustedResolver
     , whitelist
-    , cacheFilename: routeCacheFilename
+    , cacheFilename: options.routeCacheFilename
     , logger
     })
     const server = buildServer(resolver.resolveA.bind(resolver))
 
-    server.listen(port)
+    server.listen(options.port)
   })
   .parse()
+
+function getOptions() {
+  const opts = program.opts()
+
+  const testServer: string = opts.testServer
+  const untrustedServer: string = opts.untrustedServer
+  const trustedServer: string = opts.trustedServer
+
+  assert(/^\d+$/.test(opts.port), 'The parameter port must be integer')
+  const port: number = Number.parseInt(opts.port, 10)
+
+  const whitelistFilename: string = opts.whitelist
+  const routeCacheFilename: string = opts.routeCache
+  const testCacheFilename: string = opts.testCache
+
+  assert(/^\d+$/.test(opts.testTimeout), 'The parameter test timeout must be integer')
+  const testTimeout = Number.parseInt(opts.testTimeout, 10)
+
+  const logLevel: Level = parseLogLevel(opts.log)
+
+  return {
+    testServer
+  , untrustedServer
+  , trustedServer
+  , port
+  , whitelistFilename
+  , routeCacheFilename
+  , testCacheFilename
+  , testTimeout
+  , logLevel
+  }
+}

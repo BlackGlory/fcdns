@@ -17,11 +17,13 @@ export class Whitelist extends AsyncConstructor {
   includes(address: string): boolean {
     if (isIPv4Address(address)) {
       return this.ipv4.some(x => x.includes(address))
-    } else if (isIPv6Address(address)) {
-      return this.ipv6.some(x => x.includes(address))
-    } else {
-      return false
     }
+
+    if (isIPv6Address(address)) {
+      return this.ipv6.some(x => x.includes(address))
+    }
+
+    return false
   }
 }
 

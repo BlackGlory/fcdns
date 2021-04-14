@@ -69,9 +69,9 @@ function printError(
 
 function createPrefix({ level, timestamp, id, hostname }: IPrefix): string {
   return `[${levelToString(level).toUpperCase()}]`
-    + `[${formatDate(timestamp)}]`
-    + ` #${id}`
-    + ` ${formatHostname(hostname)}`
+       + `[${formatDate(timestamp)}]`
+       + ` #${id}`
+       + ` ${formatHostname(hostname)}`
 }
 
 function createPostfix({ elapsed }: { elapsed: number }): string {
@@ -89,9 +89,11 @@ function formatHostname(hostname: string): string {
 function formatElapsedTime(elapsed: number): string {
   if (elapsed <= 100) {
     return chalk.green`${elapsed}ms`
-  } else if (elapsed <= 300) {
-    return chalk.yellow`${elapsed}ms`
-  } else {
-    return chalk.red`${elapsed}ms`
   }
+
+  if (elapsed <= 300) {
+    return chalk.yellow`${elapsed}ms`
+  }
+
+  return chalk.red`${elapsed}ms`
 }
