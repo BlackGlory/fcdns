@@ -282,10 +282,15 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.1.tgz#283f669ff76d7b8260df8ab7a4262cc83d988256"
   integrity sha512-fZQQafSREFyuZcdWFAExYjBiCL7AUCdgsk80iO0q4yihYYdcIiH28CcuPTGFgLOCC8RlW49GSQxdHwZP+I7CNg==
 
-"@types/node@*", "@types/node@^14.14.37":
+"@types/node@*":
   version "14.14.37"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.37.tgz#a3dd8da4eb84a996c36e331df98d82abd76b516e"
   integrity sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
+
+"@types/node@^14.14.41":
+  version "14.14.41"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.41.tgz#d0b939d94c1d7bd53d04824af45f1139b8c45615"
+  integrity sha512-dueRKfaJL4RTtSa7bWeTK1M+VH+Gns73oCgzvYfHZywRCoPSd8EkXBL0mZ9unPTveBn+D9phZBaxuzpwjWkW0g==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1388,10 +1393,10 @@ extra-logger@^0.2.1:
     "@blackglory/types" "^0.4.2"
     hotypes "^0.1.4"
 
-extra-logger@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/extra-logger/-/extra-logger-0.5.2.tgz#000453b35efc32f220197013520671b8cfcb765c"
-  integrity sha512-tKPJHyWczy/cYiWHdai/jSenVEoUYA820MiSJG79Y70zpTNQam2bbSpcT6t4LNbiPsS10g86vQcaMP2AppakmQ==
+extra-logger@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/extra-logger/-/extra-logger-0.5.3.tgz#44f033367efd253d048cb1bdc445c71f1e95d6e0"
+  integrity sha512-RRwAQ+kdfTqd0e01AofKtjQza7ZTM2BvBDjPEq402UXvpEOSk+3HMGk4L3yCFd7NTDTIbNv1DR7dLSvQsXP+WA==
   dependencies:
     "@blackglory/types" "^0.4.2"
     hotypes "^0.1.4"
