@@ -56,7 +56,7 @@
     "@blackglory/types": "^0.4.2",
     "address-range": "^0.2.1",
     "async-constructor": "^0.4.12",
-    "chalk": "^4.1.0",
+    "chalk": "^4.1.1",
     "commander": "^7.2.0",
     "extra-logger": "^0.5.3",
     "extra-promise": "^0.16.2",
