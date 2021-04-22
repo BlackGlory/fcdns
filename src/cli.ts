@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 import { program } from 'commander'
-import { buildServer } from './server'
+import { startServer } from './server'
 import { Router } from './router'
 import { Whitelist } from './whitelist'
 import { Tester } from './tester'
 import { createDNSResolver } from '@utils/create-dns-resolver'
 import { parseLogLevel } from '@utils/parse-log-level'
 import { assert } from '@blackglory/errors'
-import { createRouteLogger } from './logger'
+import { createCustomLogger } from './logger'
 import { Level } from 'extra-logger'
+import { parseServerInfo } from '@utils/parse-server-info'
 
 program
   .name(require('../package.json').name)
@@ -31,20 +32,25 @@ program
     , cacheFilename: options.testCacheFilename
     })
     const untrustedResolver = createDNSResolver(options.untrustedServer)
-    const trustedResolver = createDNSResolver(options.trustedServer)
     const whitelist = await new Whitelist(options.whitelistFilename)
-    const logger = createRouteLogger(options.logLevel)
-    const resolver = await new Router({
+    const router = await new Router({
       tester
     , untrustedResolver
-    , trustedResolver
     , whitelist
     , cacheFilename: options.routeCacheFilename
-    , logger
     })
-    const server = buildServer(resolver.resolveA.bind(resolver))
+    const logger = createCustomLogger(options.logLevel)
 
-    server.listen(options.port)
+    const untrustedServer = parseServerInfo(options.untrustedServer)
+    const trustedServer = parseServerInfo(options.trustedServer)
+
+    startServer({
+      router
+    , logger
+    , trustedServer
+    , untrustedServer
+    , port: options.port
+    })
   })
   .parse()
 

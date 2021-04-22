@@ -26,7 +26,7 @@ interface IPrefix {
   hostname: string
 }
 
-export function createRouteLogger(level: Level) {
+export function createCustomLogger(level: Level) {
   return createLogger(level, {
     [Level.Trace]: printMessage(Level.Trace, console.log)
   , [Level.Debug]: printMessage(Level.Debug, console.log)
