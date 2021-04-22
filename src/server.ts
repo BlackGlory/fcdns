@@ -26,11 +26,22 @@ export function startServer({ logger, port, router, trustedServer, untrustedServ
       const id = countup().toString()
       const startTime = getTimestamp()
 
-      const target = await router.getTarget(question.name)
+      var [err, target] = await getErrorResultAsync(() => router.getTarget(question.name))
+      if (err) {
+        logger.error({
+          hostname: question.name
+        , id
+        , reason: `${err}`
+        , timestamp: getTimestamp()
+        , elapsed: getElapsed(startTime)
+        })
+        return []
+      }
+
       logger.debug({
         hostname: question.name
       , id
-      , message: Target[target]
+      , message: Target[target!]
       , timestamp: getTimestamp()
       , elapsed: getElapsed(startTime)
       })
@@ -39,7 +50,7 @@ export function startServer({ logger, port, router, trustedServer, untrustedServ
         target === Target.Trusted
         ? trustedServer
         : untrustedServer
-      const [err, answers] = await getErrorResultAsync(() => resolve(server, question))
+      var [err, answers] = await getErrorResultAsync(() => resolve(server, question))
 
       if (err) {
         logger.error({
@@ -50,16 +61,16 @@ export function startServer({ logger, port, router, trustedServer, untrustedServ
         , elapsed: getElapsed(startTime)
         })
         return []
-      } else {
-        logger.info({
-          hostname: question.name
-        , id
-        , message: ResourceRecordType[question.type]
-        , timestamp: getTimestamp()
-        , elapsed: getElapsed(startTime)
-        })
-        return answers!
       }
+
+      logger.info({
+        hostname: question.name
+      , id
+      , message: ResourceRecordType[question.type]
+      , timestamp: getTimestamp()
+      , elapsed: getElapsed(startTime)
+      })
+      return answers!
     })
 
     answers

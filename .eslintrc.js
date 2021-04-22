@@ -10,6 +10,7 @@ module.exports = {
   ]
 , rules: {
     'no-useless-escape': 'off'
+  , 'no-var': 'off'
   , '@typescript-eslint/no-var-requires': 'off'
   }
 }
