@@ -168,11 +168,11 @@ fcdns的内存缓存受V8引擎的实现限制, 且缓存是只增不减的.
 
 ### DNS服务器黑名单/白名单
 
-禁止向非DNS服务器发送DNS查询数据包将会破坏fcdns的投毒测试功能.
+禁止向非DNS服务器发送DNS数据包将会破坏fcdns的投毒测试功能.
 
 ### 禁止ping
 
-禁止发送ping(echo request)或丢弃reply(echo reply)会破坏fcdns的投毒测试功能.
+禁止发送ping(echo request)或丢弃reply(echo reply)将会破坏fcdns的投毒测试功能.
 
 ### 无差别污染
 
@@ -180,7 +180,7 @@ fcdns的内存缓存受V8引擎的实现限制, 且缓存是只增不减的.
 
 ### 无规律/间歇性投毒
 
-由于fcdns的缓存, 无规律/间歇性投毒将会使fcdns生成错误的缓存记录.
+无规律/间歇性投毒将会使fcdns生成错误的缓存记录.
 
 ## 未实现的功能
 
