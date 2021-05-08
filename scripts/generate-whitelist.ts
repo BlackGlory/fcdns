@@ -3,16 +3,22 @@ import {
 , parseStatisticsFile
 , isRecord, IRecord, Domain, Registry
 } from 'internet-number'
-import { withFile } from 'tmp-promise'
+import { createTempFile } from 'extra-filesystem'
+import { promises as fs } from 'fs'
 import { AsyncIterableOperator } from 'iterable-operator/lib/es2018/style/chaining/async-iterable-operator'
 import { IPv4AddressRange, IPv6AddressRange, compress } from 'address-range'
 import { go } from '@blackglory/go'
 import { writeAddressRangesFile } from '../src/utils/address-ranges-file'
 
 go(async () => {
-  const ranges = await withFile(async ({ path: filename }) => {
-    await downloadLatestStatisticsFile(Domain.APNIC, Registry.APNIC, filename)
-    return await parseAddressRangesFromStatisticsFile(filename, ['CN'])
+  const ranges = await go(async () => {
+    const filename = await createTempFile()
+    try {
+      await downloadLatestStatisticsFile(Domain.APNIC, Registry.APNIC, filename)
+      return await parseAddressRangesFromStatisticsFile(filename, ['CN'])
+    } finally {
+      await fs.rm(filename)
+    }
   })
 
   await writeAddressRangesFile('whitelist.txt', ranges)

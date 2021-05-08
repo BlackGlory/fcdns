@@ -1404,10 +1404,12 @@ extra-fetch@^1.7.1:
     return-style "^0.12.3"
     value-getter "^0.1.13"
 
-extra-filesystem@^0.2.14:
-  version "0.2.14"
-  resolved "https://registry.yarnpkg.com/extra-filesystem/-/extra-filesystem-0.2.14.tgz#199d6dd00d578c05af42993ab6bc851756fcfb11"
-  integrity sha512-SrWvy0BCkVip2etl3s4+Ujo6S8rY6lkRzr3h6coHspnjiUn2/sKqWAaiGmuZqeVZ1brn1v3QEsmZc1+xne08UA==
+extra-filesystem@^0.2.16, extra-filesystem@^0.2.17:
+  version "0.2.17"
+  resolved "https://registry.yarnpkg.com/extra-filesystem/-/extra-filesystem-0.2.17.tgz#d4cab5c85db17018c97522231f08d8110d5ca9ef"
+  integrity sha512-tSUn08Xzw3RR4x/gWjVYlw/2ysfoCr1hAMe4RpZXEx+n31P8X5SXEKX1vSasMWyM2lbSTxJD3oBvx6sQbVYHZg==
+  dependencies:
+    tmp-promise "^3.0.2"
 
 extra-generator@^0.2.4:
   version "0.2.4"
@@ -2009,12 +2011,13 @@ ini@^1.3.2, ini@^1.3.4:
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
 
-internet-number@^2.2.10:
-  version "2.2.10"
-  resolved "https://registry.yarnpkg.com/internet-number/-/internet-number-2.2.10.tgz#a41429cd21768b49025c83095085b62d36273f2e"
-  integrity sha512-fi+vykkcEuQ/TiNWBHJr6HUHCygV/QOsixsHJ8CKXRpyQ7gxmu1yGNKsrTCGu+OpPyajFYKjfotvS2PEnvPIbg==
+internet-number@^2.2.11:
+  version "2.2.11"
+  resolved "https://registry.yarnpkg.com/internet-number/-/internet-number-2.2.11.tgz#b7f6eaa86c168fbd26649c034803d0dada464bfa"
+  integrity sha512-99kAGAr9H50GO2IO4MDkjq+IsUd0C+W0+iscFbWUcUyG2TvcbDFxMSYzzYFjswMYmYm3jXjjQqc9xf8nzs7xBQ==
   dependencies:
     "@blackglory/errors" "^1.1.2"
+    extra-filesystem "^0.2.16"
     get-uri "^3.0.2"
     md5-file "^5.0.0"
 

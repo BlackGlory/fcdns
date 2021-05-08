@@ -57,7 +57,7 @@
     "async-constructor": "^0.4.13",
     "chalk": "^4.1.1",
     "commander": "^7.2.0",
-    "extra-filesystem": "^0.2.14",
+    "extra-filesystem": "^0.2.17",
     "extra-logger": "^0.5.4",
     "extra-promise": "^0.16.4",
     "iterable-operator": "^0.13.6",
@@ -67,7 +67,6 @@
     "return-style": "^0.12.3"
   },
   "optionalDependencies": {
-    "internet-number": "^2.2.10",
-    "tmp-promise": "^3.0.2"
+    "internet-number": "^2.2.11"
   }
 }
