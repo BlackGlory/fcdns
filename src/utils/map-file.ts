@@ -1,10 +1,11 @@
 import { IterableOperator } from 'iterable-operator/lib/es2018/style/chaining'
-import * as fs from 'fs-extra'
+import { promises as fs } from 'fs'
+import { ensureFile } from 'extra-filesystem'
 
 export async function readMapFile<T, U>(
   filename: string
 ): Promise<Map<T, U>> {
-  await fs.ensureFile(filename)
+  await ensureFile(filename)
   const text = await fs.readFile(filename, 'utf-8')
   const entries: Array<[key: T, value: U]> = text.split('\n')
     .filter(x => !!x)
