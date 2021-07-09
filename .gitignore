@@ -61,6 +61,7 @@ typings/
 lib
 
 # Files
-whitelist.txt
+ip-whitelist.txt
+hostname-whitelist.txt
 test.txt
 route.txt

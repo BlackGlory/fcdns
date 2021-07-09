@@ -1,6 +1,7 @@
 import { promises as dns } from 'dns'
 import { Tester } from './tester'
-import { Whitelist } from './whitelist'
+import { IPWhitelist } from './ip-whitelist'
+import { HostnameWhitelist } from './hostname-whitelist'
 import { AsyncConstructor } from 'async-constructor'
 import { readMapFile, writeMapFile, appendMapFile } from '@utils/map-file'
 import { resolveA } from '@utils/resolve-a'
@@ -15,13 +16,15 @@ export class Router extends AsyncConstructor {
   cache!: Map<string, Target>
   tester: Tester
   untrustedResolver: dns.Resolver
-  whitelist: Whitelist
+  ipWhitelist: IPWhitelist
+  hostnameWhitelist: HostnameWhitelist
 
   constructor(options: {
     cacheFilename: string
     tester: Tester
     untrustedResolver: dns.Resolver
-    whitelist: Whitelist
+    ipWhitelist: IPWhitelist
+    hostnameWhitelist: HostnameWhitelist
   }) {
     super(async () => {
       this.cache = await readMapFile<string, Target>(this.cacheFilename)
@@ -31,11 +34,14 @@ export class Router extends AsyncConstructor {
     })
     this.tester = options.tester
     this.untrustedResolver = options.untrustedResolver
-    this.whitelist = options.whitelist
+    this.ipWhitelist = options.ipWhitelist
+    this.hostnameWhitelist = options.hostnameWhitelist
     this.cacheFilename = options.cacheFilename
   }
 
   async getTarget(hostname: string): Promise<Target> {
+    if (this.inHostnameWhitelist(hostname)) return Target.Untrusted
+
     if (this.cache.has(hostname)) {
       return this.cache.get(hostname)!
     } else {
@@ -45,7 +51,7 @@ export class Router extends AsyncConstructor {
       } else {
         const addresses = await resolveA(this.untrustedResolver, hostname)
         if (addresses.length > 0) {
-          if (this.inWhitelist(addresses)) {
+          if (this.inIPWhitelist(addresses)) {
             this.setCache(hostname, Target.Untrusted)
             return Target.Untrusted
           } else {
@@ -59,8 +65,12 @@ export class Router extends AsyncConstructor {
     }
   }
 
-  private inWhitelist(addresses: string[]): boolean {
-    return addresses.some(x => this.whitelist.includes(x))
+  private inIPWhitelist(addresses: string[]): boolean {
+    return addresses.some(x => this.ipWhitelist.includes(x))
+  }
+
+  private inHostnameWhitelist(hostname: string): boolean {
+    return this.hostnameWhitelist.includes(hostname)
   }
 
   private setCache(hostname: string, result: Target): void {

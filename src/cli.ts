@@ -2,7 +2,8 @@
 import { program } from 'commander'
 import { startServer } from './server'
 import { Router } from './router'
-import { Whitelist } from './whitelist'
+import { IPWhitelist } from './ip-whitelist'
+import { HostnameWhitelist } from './hostname-whitelist'
 import { Tester } from './tester'
 import { createDNSResolver } from '@utils/create-dns-resolver'
 import { parseLogLevel } from '@utils/parse-log-level'
@@ -19,7 +20,8 @@ program
   .option('--untrusted-server <server>', '')
   .option('--trusted-server <server>', '')
   .option('--port <port>', '', '53')
-  .option('--whitelist <filename>', '', 'whitelist.txt')
+  .option('--ip-whitelist <filename>', '', 'ip-whitelist.txt')
+  .option('--hostname-whitelist <filename>', '', 'hostname-whitelist.txt')
   .option('--route-cache <filename>', '', 'route.txt')
   .option('--test-cache <filename>', '', 'test.txt')
   .option('--test-timeout <ms>', '', '200')
@@ -32,11 +34,13 @@ program
     , cacheFilename: options.testCacheFilename
     })
     const untrustedResolver = createDNSResolver(options.untrustedServer)
-    const whitelist = await new Whitelist(options.whitelistFilename)
+    const ipWhitelist = await new IPWhitelist(options.ipWhitelistFilename)
+    const hostnameWhitelist = await new HostnameWhitelist(options.hostnameWhitelistFilename)
     const router = await new Router({
       tester
     , untrustedResolver
-    , whitelist
+    , ipWhitelist
+    , hostnameWhitelist
     , cacheFilename: options.routeCacheFilename
     })
     const logger = createCustomLogger(options.logLevel)
@@ -64,7 +68,8 @@ function getOptions() {
   assert(/^\d+$/.test(opts.port), 'The parameter port must be integer')
   const port: number = Number.parseInt(opts.port, 10)
 
-  const whitelistFilename: string = opts.whitelist
+  const ipWhitelistFilename: string = opts.ipWhitelist
+  const hostnameWhitelistFilename: string = opts.hostnameWhitelist
   const routeCacheFilename: string = opts.routeCache
   const testCacheFilename: string = opts.testCache
 
@@ -78,7 +83,8 @@ function getOptions() {
   , untrustedServer
   , trustedServer
   , port
-  , whitelistFilename
+  , ipWhitelistFilename
+  , hostnameWhitelistFilename
   , routeCacheFilename
   , testCacheFilename
   , testTimeout

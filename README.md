@@ -32,13 +32,14 @@ Options:
   --test-server <server>
   --untrusted-server <server>
   --trusted-server <server>
-  --port <port>                 (default: "53")
-  --whitelist <filename>        (default: "whitelist.txt")
-  --route-cache <filename>      (default: "route.txt")
-  --test-cache <filename>       (default: "test.txt")
-  --test-timeout <ms>           (default: "200")
-  --log <level>                 (default: "info")
-  -h, --help                   display help for command
+  --port <port>                   (default: "53")
+  --ip-whitelist <filename>       (default: "ip-whitelist.txt")
+  --hostname-whitelist <filename> (default: "hostname-whitelist.txt")
+  --route-cache <filename>        (default: "route.txt")
+  --test-cache <filename>         (default: "test.txt")
+  --test-timeout <ms>             (default: "200")
+  --log <level>                   (default: "info")
+  -h, --help                      display help for command
 ```
 
 Example:
@@ -55,7 +56,7 @@ fcdns \
 
 ## 必要条件
 
-使用fcdns需要指定3个服务器地址和1份IP地址范围白名单.
+使用fcdns需要指定3个服务器地址, 1份IP地址白名单, 1份主机名白名单.
 
 ### 投毒测试服务器(test server)
 
@@ -88,20 +89,31 @@ fcdns会持久化缓存投毒测试的结果, 同一个主机名只在第一次�
 
 *fcdns只具有最低限度的DNS功能, 强烈建议使用CoreDNS等程序建立本地DNS服务器作为代理.*
 
-### IP地址范围白名单(whitelist)
+### IP地址白名单(ip whitelist)
 
-IP地址范围白名单用于指定允许用"不可信DNS服务器"返回的IP地址范围,
+IP地址白名单用于指定允许用"不可信DNS服务器"返回的IP地址或IP地址范围,
 所有不在白名单内的IP地址都会转用"可信DNS服务器"进行二次查询.
 
-如果DNS查询返回了多条A记录, 则只要有一条A记录的IP地址位于白名单范围内, 就被认为是命中了白名单.
+如果DNS查询返回了多条A记录, 则只要有一条A记录的IP地址与白名单匹配, 就算作命中.
 
-fcdns会持久化缓存查询最终选择的服务器, 同一个主机名只在第一次查询时会经历IP地址范围白名单.
+fcdns会持久化缓存查询最终选择的服务器, 同一个主机名只在第一次查询时会被IP地址白名单影响.
 
 fcdns之所以使用白名单而不是黑名单, 是因为在真实世界的案例中, 白名单所需的内容条数较少.
 
 #### 文件格式
 
-白名单是一个文本文件, 以行为分隔符储存地址范围, 地址范围由起点IP和终点IP组成, 以`-`相连.
+白名单是一个文本文件, 以行为分隔符储存地址或地址范围.
+地址范围由起点IP和终点IP组成, 以`-`相连.
+
+IPv4地址示例:
+```
+1.1.1.1
+```
+
+IPv6地址示例:
+```
+2606:4700:4700::1111
+```
 
 IPv4地址范围示例:
 ```
@@ -117,6 +129,22 @@ IPv6地址范围示例:
 ```
 0.0.0.0-255.255.255.255
 ::-ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+```
+
+### 主机名白名单(hostname whitelist)
+
+主机名白名单用于强制使某些主机名在解析时使用不可信DNS服务器, 其优先级高于fcdns里的其他规则.
+
+#### 文件格式
+
+白名单是一个文本文件, 以行为分隔符存储主机名模式.
+主机名模式使用`*`作为通配符, 可以匹配任意个字符.
+fcdns认为的合法主机名模式只能由数字, 字母, 连字符(`-`), 点(`.`), 通配符(`*`)组成.
+
+主机名模式示例:
+```
+wikipedia.org
+*.wikipedia.org
 ```
 
 ## 性能
