@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/BlackGlory/fcdns/compare/v0.1.6...v0.2.0) (2021-07-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename whitelist.txt to ip-whitelist.txt
+
+### Features
+
+* add hostname whitelist ([f96d2f3](https://github.com/BlackGlory/fcdns/commit/f96d2f38daf1506e168d7e380b09edad87165d06))
+* support to parse ip addresses in whitelist ([10024db](https://github.com/BlackGlory/fcdns/commit/10024db45acb5201f67ecc64a7e2cf54ade396b4))
+
 ### [0.1.6](https://github.com/BlackGlory/fcdns/compare/v0.1.5...v0.1.6) (2021-05-17)
 
 ### [0.1.5](https://github.com/BlackGlory/fcdns/compare/v0.1.4...v0.1.5) (2021-05-14)
