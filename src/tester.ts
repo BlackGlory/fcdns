@@ -35,16 +35,16 @@ export class Tester extends AsyncConstructor {
   /**
    * @throws {ServerNotAlive}
    */
-  async isPoisoned(domain: string): Promise<boolean | null> {
-    if (this.cache.has(domain)) {
-      return this.cache.get(domain)!
+  async isPoisoned(hostname: string): Promise<boolean | null> {
+    if (this.cache.has(hostname)) {
+      return this.cache.get(hostname)!
     } else {
       const [alive, poisoned] = await Promise.all([
         isAlive(this.server, this.timeout)
-      , isSuccessPromise(resolveA(this.testResolver, domain, this.timeout))
+      , isSuccessPromise(resolveA(this.testResolver, hostname, this.timeout))
       ])
       if (alive) {
-        this.setCache(domain, poisoned)
+        this.setCache(hostname, poisoned)
         return poisoned
       } else {
         throw new ServerNotAlive()
@@ -52,9 +52,9 @@ export class Tester extends AsyncConstructor {
     }
   }
 
-  private setCache(domain: string, result: boolean): void {
-    this.cache.set(domain, result)
-    appendMapFile(this.cacheFilename, domain, result)
+  private setCache(hostname: string, result: boolean): void {
+    this.cache.set(hostname, result)
+    appendMapFile(this.cacheFilename, hostname, result)
   }
 }
 
