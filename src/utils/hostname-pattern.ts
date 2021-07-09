@@ -4,7 +4,7 @@ export class HostnamePattern {
   constructor(pattern: string) {
     const re = pattern.replace(/\./g, '\\.')
                       .replace(/\*/g, '.*')
-    this.re = new RegExp(re, 'i')
+    this.re = new RegExp(`^${re}$`, 'i')
   }
 
   match(hostname: string): boolean {
