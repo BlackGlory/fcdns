@@ -26,7 +26,7 @@ export class Router extends AsyncConstructor {
     super(async () => {
       this.cache = await readMapFile<string, Target>(this.cacheFilename)
 
-      // format
+      // format the file
       await writeMapFile(this.cacheFilename, this.cache)
     })
     this.tester = options.tester

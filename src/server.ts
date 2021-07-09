@@ -10,13 +10,15 @@ import { ResourceRecordType } from './resource-record-type'
 import { getErrorResultAsync } from 'return-style'
 import ms from 'ms'
 
-export function startServer({ logger, port, router, trustedServer, untrustedServer }: {
+interface IStartServerOptions {
   router: Router
-, untrustedServer: IServerInfo
-, trustedServer: IServerInfo
-, logger: ReturnType<typeof createCustomLogger>
-, port: number
-}) {
+  untrustedServer: IServerInfo
+  trustedServer: IServerInfo
+  logger: ReturnType<typeof createCustomLogger>
+  port: number
+}
+
+export function startServer({ logger, port, router, trustedServer, untrustedServer }: IStartServerOptions) {
   const server = dns.createServer()
 
   server.on('error', console.error)
@@ -83,10 +85,7 @@ export function startServer({ logger, port, router, trustedServer, untrustedServ
   return server.serve(port)
 }
 
-function resolve(
-  server: IServerInfo
-, question: dns.IQuestion
-): Promise<dns.IResourceRecord[]> {
+function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IResourceRecord[]> {
   return new Promise((resolve, reject) => {
     const answers: dns.IResourceRecord[] = []
     const request = dns.Request({

@@ -22,7 +22,7 @@ export class Tester extends AsyncConstructor {
     super(async () => {
       this.cache = await readMapFile(this.cacheFilename)
 
-      // format
+      // format the file
       await writeMapFile(this.cacheFilename, this.cache)
     })
 
