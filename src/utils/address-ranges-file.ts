@@ -19,6 +19,14 @@ export async function readAddressRangesFile(
     .filter(x => x.trim())
     .filter(x => x !== '')
     .forEach(x => {
+      if (isIPv4Address(x)) {
+        ipv4AddressRanges.push(IPv4AddressRange.from(x, x))
+      }
+
+      if (isIPv6Address(x)) {
+        ipv6AddressRanges.push(IPv6AddressRange.from(x, x))
+      }
+
       if (isIPv4AddressRange(x)) {
         const [startAddress, endAddress] = x.split('-')
         ipv4AddressRanges.push(IPv4AddressRange.from(startAddress, endAddress))
@@ -33,10 +41,18 @@ export async function readAddressRangesFile(
   return { ipv4: ipv4AddressRanges, ipv6: ipv6AddressRanges }
 }
 
-function isIPv4AddressRange(addressRange: string): boolean {
-  return /^[\d\.]+-[\d\.]+$/.test(addressRange)
+function isIPv4Address(text: string): boolean {
+  return /^[\d\.]+$/.test(text)
 }
 
-function isIPv6AddressRange(addressRange: string): boolean {
-  return /^[\da-f:]+$/.test(addressRange)
+function isIPv4AddressRange(text: string): boolean {
+  return /^[\d\.]+-[\d\.]+$/.test(text)
+}
+
+function isIPv6Address(text: string): boolean {
+  return /^[\da-f:]$/.test(text)
+}
+
+function isIPv6AddressRange(text: string): boolean {
+  return /^[\da-f:]+-[\da-f:]+$/.test(text)
 }
