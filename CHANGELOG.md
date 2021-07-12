@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/BlackGlory/fcdns/compare/v0.2.1...v0.2.2) (2021-07-12)
+
+
+### Bug Fixes
+
+* isHostnamePattern ([eee8e03](https://github.com/BlackGlory/fcdns/commit/eee8e03703e4cac962db6b2d05965f877051c30b))
+
 ### [0.2.1](https://github.com/BlackGlory/fcdns/compare/v0.2.0...v0.2.1) (2021-07-09)
 
 
