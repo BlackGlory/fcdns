@@ -6,7 +6,7 @@ export async function readHostnameListFile(
 ): Promise<HostnamePattern[]> {
   const text = await fs.readFile(filename, 'utf-8')
   const patterns = text.split('\n')
-    .filter(x => x.trim())
+    .map(x => x.trim())
     .filter(x => x !== '')
     .filter(isHostnamePattern)
     .map(x => new HostnamePattern(x))
@@ -15,5 +15,5 @@ export async function readHostnameListFile(
 }
 
 function isHostnamePattern(text: string): boolean {
-  return /^[\da-zA-Z.*]+$/.test(text)
+  return /^[\da-zA-Z\-.*]+$/.test(text)
 }
