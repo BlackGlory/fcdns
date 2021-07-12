@@ -63,6 +63,13 @@
   dependencies:
     justypes "^0.1.4"
 
+"@blackglory/types@^0.4.7":
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/@blackglory/types/-/types-0.4.7.tgz#c704911ec8f8fa09c5c9b1f51d57c80f6aad1dc2"
+  integrity sha512-IVD3Tts/iKT/O69NzNIUrkYy69lp33KEWWYPB5ZlF0IUmJJBIB9cM3m67oYArbpXoCa0HZKaCFQBvqjX8TbS7A==
+  dependencies:
+    justypes "^0.1.5"
+
 "@commitlint/cli@^12.1.4":
   version "12.1.4"
   resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-12.1.4.tgz#af4d9dd3c0122c7b39a61fa1cd2abbad0422dbe0"
@@ -301,10 +308,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.37.tgz#a3dd8da4eb84a996c36e331df98d82abd76b516e"
   integrity sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
 
-"@types/node@^16.3.0":
-  version "16.3.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.3.0.tgz#1836664e4fad13b51b07eb6e882a53925e6543c4"
-  integrity sha512-OydMCocGMGqw/1BnWbhtK+AtwyWTOigtrQlRe57OQmTNcI3HKlVI5FGlh+c4mSqInMPLynFrTlYjfajPu9O/eQ==
+"@types/node@^16.3.1":
+  version "16.3.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.3.1.tgz#24691fa2b0c3ec8c0d34bfcfd495edac5593ebb4"
+  integrity sha512-N87VuQi7HEeRJkhzovao/JviiqKjDKMVKxKMfUvSKw+MbkbW8R0nA3fi/MQhhlxV2fQ+2ReM+/Nt4efdrJx3zA==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1474,12 +1481,12 @@ extra-filesystem@^0.3.1:
     extra-promise "^0.16.6"
     tmp-promise "^3.0.2"
 
-extra-filesystem@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/extra-filesystem/-/extra-filesystem-0.3.2.tgz#5f46109c54dc53c3bdc78f364061a64141350ae5"
-  integrity sha512-UDaxB4MXuVgpAQmTeVw8eETBxKF1fkxQfh8L7yetMgzyZfe6BEs7dau94HeJuaVHWFqqzmgnGsodcPORqZaq0g==
+extra-filesystem@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/extra-filesystem/-/extra-filesystem-0.3.3.tgz#a9b4d23aca6a9989066f373cca7ae4ea3436d00e"
+  integrity sha512-3Tf0N2N9hjqh5AOHqN2pYwFB+irkEnwx2jtbYwaRQRdD0z5w4JqAK7VWxTexnOfHG3sML9QpVjDbyh4bcvPvOQ==
   dependencies:
-    extra-promise "^0.17.0"
+    extra-promise "^0.17.4"
     tmp-promise "^3.0.2"
 
 extra-generator@^0.2.5, extra-generator@^0.2.6:
@@ -1525,22 +1532,6 @@ extra-promise@^0.16.6:
     eventemitter3 "^4.0.7"
     extra-fetch "^1.7.1"
     extra-generator "^0.2.5"
-    iterable-operator "^0.14.0"
-    reflect-metadata "^0.1.13"
-    return-style "^0.12.3"
-
-extra-promise@^0.17.0:
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-0.17.1.tgz#808f65abedee76fc3f2610a530b5c24a9af5e546"
-  integrity sha512-ZfSudPYLAYqwoEuZ0wptyDTLip6atGmfxJaOzZJHJj+mKQUUthMILAr8GFy6fJFphLkbBALrWCCnzk7YYnYV7A==
-  dependencies:
-    "@blackglory/errors" "^1.1.2"
-    "@blackglory/go" "^0.1.0"
-    "@blackglory/structures" "^0.2.1"
-    "@blackglory/types" "^0.4.2"
-    eventemitter3 "^4.0.7"
-    extra-fetch "^1.7.1"
-    extra-generator "^0.2.6"
     iterable-operator "^0.14.0"
     reflect-metadata "^0.1.13"
     return-style "^0.12.3"
@@ -2504,7 +2495,7 @@ justypes@^0.1.1:
   resolved "https://registry.yarnpkg.com/justypes/-/justypes-0.1.1.tgz#1c94541bdb6c98090740b819e91ebe76ac571bbf"
   integrity sha512-pvOmEluk255+Sr3HTaZuVjUIzaAuV2w7EO2zZ8CQTN8ZyJc5kPCobJ3TjgOvIkfZKI9wMh+/5g6KYzcjaQPSuQ==
 
-justypes@^0.1.4:
+justypes@^0.1.4, justypes@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/justypes/-/justypes-0.1.5.tgz#efa30b083b1cb59f9a8757dbc5f16a70ee48d83e"
   integrity sha512-IEeo88ZvQ4GdleKVtbGMAhqpeiwrjOpBqAyTQvzqc/jy23V0hkoKUbq5ig5F4TPirGBehm4/3/nstWKGwvFN0Q==
@@ -2868,13 +2859,6 @@ nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
-
-"node-fetch@git+https://github.com/BlackGlory/node-fetch.git#master":
-  version "3.0.0-beta.9"
-  resolved "git+https://github.com/BlackGlory/node-fetch.git#8b4c5b1f49b78c9071f33b7dca2391280eb4652f"
-  dependencies:
-    data-uri-to-buffer "^3.0.1"
-    fetch-blob "^2.1.1"
 
 "node-fetch@https://github.com/BlackGlory/node-fetch#master":
   version "3.0.0-beta.9"
