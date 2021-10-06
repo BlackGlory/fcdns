@@ -18,7 +18,13 @@ interface IStartServerOptions {
   port: number
 }
 
-export function startServer({ logger, port, router, trustedServer, untrustedServer }: IStartServerOptions) {
+export function startServer({
+  logger
+, port
+, router
+, trustedServer
+, untrustedServer
+}: IStartServerOptions) {
   const server = dns.createServer()
 
   server.on('error', console.error)

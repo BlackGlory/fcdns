@@ -39,6 +39,7 @@ Options:
   --test-cache <filename>         (default: "test.txt")
   --test-timeout <ms>             (default: "200")
   --log <level>                   (default: "info")
+  --loose-mode
   -h, --help                      display help for command
 ```
 
@@ -146,6 +147,12 @@ fcdns认为的合法主机名模式只能由数字, 字母, 连字符(`-`), 点(
 wikipedia.org
 *.wikipedia.org
 ```
+
+## 宽松模式
+
+在宽松模式下, 当相关主机名不存在路由缓存时(即第一次查询该主机名), 会立即查询不可信服务器并返回记录, 然后在后台执行投毒测试和路由缓存.
+
+宽松模式通过降低fcdns的准确性, 提升了在可信信道不稳定情况下的用户体验, 这适用于只有少数主机名被投毒的环境.
 
 ## 性能
 

@@ -14,12 +14,14 @@ export enum Target {
 export class Router extends AsyncConstructor {
   cacheFilename: string
   cache!: Map<string, Target>
+  looseMode: boolean
   tester: Tester
   untrustedResolver: dns.Resolver
   ipWhitelist: IPWhitelist
   hostnameWhitelist: HostnameWhitelist
 
   constructor(options: {
+    looseMode: boolean
     cacheFilename: string
     tester: Tester
     untrustedResolver: dns.Resolver
@@ -37,6 +39,7 @@ export class Router extends AsyncConstructor {
     this.ipWhitelist = options.ipWhitelist
     this.hostnameWhitelist = options.hostnameWhitelist
     this.cacheFilename = options.cacheFilename
+    this.looseMode = options.looseMode
   }
 
   async getTarget(hostname: string): Promise<Target> {
@@ -45,22 +48,31 @@ export class Router extends AsyncConstructor {
     if (this.cache.has(hostname)) {
       return this.cache.get(hostname)!
     } else {
-      if (await this.tester.isPoisoned(hostname)) {
-        this.setCache(hostname, Target.Trusted)
-        return Target.Trusted
+      if (this.looseMode) {
+        queueMicrotask(() => this.getTargetWithoutCache(hostname))
+        return Target.Untrusted
       } else {
-        const addresses = await resolveA(this.untrustedResolver, hostname)
-        if (addresses.length > 0) {
-          if (this.inIPWhitelist(addresses)) {
-            this.setCache(hostname, Target.Untrusted)
-            return Target.Untrusted
-          } else {
-            this.setCache(hostname, Target.Trusted)
-            return Target.Trusted
-          }
+        return await this.getTargetWithoutCache(hostname)
+      }
+    }
+  }
+
+  async getTargetWithoutCache(hostname: string): Promise<Target> {
+    if (await this.tester.isPoisoned(hostname)) {
+      this.setCache(hostname, Target.Trusted)
+      return Target.Trusted
+    } else {
+      const addresses = await resolveA(this.untrustedResolver, hostname)
+      if (addresses.length > 0) {
+        if (this.inIPWhitelist(addresses)) {
+          this.setCache(hostname, Target.Untrusted)
+          return Target.Untrusted
         } else {
+          this.setCache(hostname, Target.Trusted)
           return Target.Trusted
         }
+      } else {
+        return Target.Trusted
       }
     }
   }
