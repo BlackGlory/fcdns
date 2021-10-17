@@ -573,15 +573,6 @@ assign-symbols@^1.0.0:
   resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
   integrity sha1-WWZ/QfrdTyDMvCu5a41Pf3jsA2c=
 
-async-constructor@^0.4.17:
-  version "0.4.17"
-  resolved "https://registry.yarnpkg.com/async-constructor/-/async-constructor-0.4.17.tgz#25e6386deedbb76de88909c5f434e9abd0bbb5f4"
-  integrity sha512-dvXxZMUtgJ2nY+cZMQ2kDShmY6o0ZlstGqCbCsACnx1BIXG33oFaea9K3vfItr3fcW1VYp7oP53PO+gR1jDc5A==
-  dependencies:
-    extra-promise "^0.19.0"
-    hotypes "^0.4.2"
-    justypes "^0.1.6"
-
 atob@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
@@ -1496,7 +1487,7 @@ extra-logger@^0.5.5:
     "@blackglory/types" "^0.4.6"
     justypes "^0.1.4"
 
-extra-promise@^0.19.0, extra-promise@^0.19.1:
+extra-promise@^0.19.1:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-0.19.1.tgz#effbadcac09cbbc8333f80ed186063621d7db3be"
   integrity sha512-q/IOZH9WArTsuQHRJT3sgATXI8LLII+4Qgl+d+TXw9TsCeSa+lLnH1BKBovklXr1YYq8mDNt8+ClssxYELCutQ==
@@ -1988,11 +1979,6 @@ hosted-git-info@^4.0.1:
   integrity sha512-c9OGXbZ3guC/xOlCg1Ci/VgWlwsqDv1yMQL1CWqXDL0hDjXuNcq0zuR4xqPSuasI3kqFDhqSyTjREz5gzq0fXg==
   dependencies:
     lru-cache "^6.0.0"
-
-hotypes@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/hotypes/-/hotypes-0.4.2.tgz#304d5a110440aeecd4494ad98a7f93a933b360c4"
-  integrity sha512-RSaPhsn0hNzRYp2VEqQJ5fMu52cwi9K57HA4XIUUfUu0Lkvhtt+A2qrWz1ViMnVtbkRKzjf3bL6J8CrsJJnIRQ==
 
 human-signals@^2.1.0:
   version "2.1.0"

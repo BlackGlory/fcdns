@@ -2,7 +2,6 @@ import { promises as dns } from 'dns'
 import { Tester } from './tester'
 import { IPWhitelist } from './ip-whitelist'
 import { HostnameWhitelist } from './hostname-whitelist'
-import { AsyncConstructor } from 'async-constructor'
 import { readMapFile, writeMapFile, appendMapFile } from '@utils/map-file'
 import { resolveA } from '@utils/resolve-a'
 
@@ -11,35 +10,38 @@ export enum Target {
 , Trusted = 1
 }
 
-export class Router extends AsyncConstructor {
-  cacheFilename: string
-  cache!: Map<string, Target>
-  looseMode: boolean
-  tester: Tester
-  untrustedResolver: dns.Resolver
-  ipWhitelist: IPWhitelist
-  hostnameWhitelist: HostnameWhitelist
+export class Router {
+  private constructor(
+    private cacheFilename: string
+  , private cache: Map<string, Target>
+  , private looseMode: boolean
+  , private tester: Tester
+  , private untrustedResolver: dns.Resolver
+  , private ipWhitelist: IPWhitelist
+  , private hostnameWhitelist: HostnameWhitelist
+  ) {}
 
-  constructor(options: {
+  static async create(options: {
     looseMode: boolean
     cacheFilename: string
     tester: Tester
     untrustedResolver: dns.Resolver
     ipWhitelist: IPWhitelist
     hostnameWhitelist: HostnameWhitelist
-  }) {
-    super(async () => {
-      this.cache = await readMapFile<string, Target>(this.cacheFilename)
+  }): Promise<Router> {
+    const tester = options.tester
+    const untrustedResolver = options.untrustedResolver
+    const ipWhitelist = options.ipWhitelist
+    const hostnameWhitelist = options.hostnameWhitelist
+    const cacheFilename = options.cacheFilename
+    const looseMode = options.looseMode
 
-      // format the file
-      await writeMapFile(this.cacheFilename, this.cache)
-    })
-    this.tester = options.tester
-    this.untrustedResolver = options.untrustedResolver
-    this.ipWhitelist = options.ipWhitelist
-    this.hostnameWhitelist = options.hostnameWhitelist
-    this.cacheFilename = options.cacheFilename
-    this.looseMode = options.looseMode
+    const cache = await readMapFile<string, Target>(cacheFilename)
+
+    // format the file
+    await writeMapFile(cacheFilename, cache)
+
+    return new Router(cacheFilename, cache, looseMode, tester, untrustedResolver, ipWhitelist, hostnameWhitelist)
   }
 
   async getTarget(hostname: string): Promise<Target> {

@@ -54,7 +54,6 @@
     "@blackglory/go": "^0.1.0",
     "@blackglory/types": "^0.5.1",
     "address-range": "^0.2.7",
-    "async-constructor": "^0.4.17",
     "chalk": "^4.1.2",
     "commander": "^8.2.0",
     "extra-filesystem": "^0.3.11",

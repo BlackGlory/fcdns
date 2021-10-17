@@ -1,5 +1,4 @@
 import { readMapFile, writeMapFile, appendMapFile } from '@utils/map-file'
-import { AsyncConstructor } from 'async-constructor'
 import { isAlive } from '@utils/is-alive'
 import { promises as dns } from 'dns'
 import { createDNSResolver } from '@utils/create-dns-resolver'
@@ -7,29 +6,30 @@ import { resolveA } from '@utils/resolve-a'
 import { CustomError } from '@blackglory/errors'
 import { isSuccessPromise } from 'return-style'
 
-export class Tester extends AsyncConstructor {
-  server: string
-  timeout: number
-  cacheFilename: string
-  testResolver: dns.Resolver
-  cache!: Map<string, boolean>
+export class Tester {
+  private constructor(
+    private server: string
+  , private timeout: number
+  , private cacheFilename: string
+  , private testResolver: dns.Resolver
+  , private cache: Map<string, boolean>
+  ) {}
 
-  constructor(options: {
+  static async create(options: {
     server: string
     timeout: number
     cacheFilename: string
-  }) {
-    super(async () => {
-      this.cache = await readMapFile(this.cacheFilename)
+  }): Promise<Tester> {
+    const server = options.server
+    const timeout = options.timeout
+    const cacheFilename = options.cacheFilename
+    const testResolver = createDNSResolver(server)
+    const cache = await readMapFile<string, boolean>(cacheFilename)
 
-      // format the file
-      await writeMapFile(this.cacheFilename, this.cache)
-    })
+    // format the file
+    await writeMapFile(cacheFilename, cache)
 
-    this.server = options.server
-    this.timeout = options.timeout
-    this.cacheFilename = options.cacheFilename
-    this.testResolver = createDNSResolver(this.server)
+    return new Tester(server, timeout, cacheFilename, testResolver, cache)
   }
 
   /**

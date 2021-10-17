@@ -1,14 +1,13 @@
-import { AsyncConstructor } from 'async-constructor'
 import { readHostnameListFile } from '@utils/hostname-list-file'
 import { HostnamePattern } from '@utils/hostname-pattern'
 
-export class HostnameWhitelist extends AsyncConstructor {
-  patterns!: HostnamePattern[]
+export class HostnameWhitelist {
+  private constructor(private patterns: HostnamePattern[]) {}
 
-  constructor(filename: string) {
-    super(async () => {
-      this.patterns = await readHostnameListFile(filename)
-    })
+  static async create(filename: string): Promise<HostnameWhitelist> {
+    const patterns = await readHostnameListFile(filename)
+
+    return new HostnameWhitelist(patterns)
   }
 
   includes(hostname: string): boolean {

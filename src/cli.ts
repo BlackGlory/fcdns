@@ -29,15 +29,15 @@ program
   .option('--loose-mode')
   .action(async () => {
     const options = getOptions()
-    const tester = await new Tester({
+    const tester = await Tester.create({
       server: options.testServer
     , timeout: options.testTimeout
     , cacheFilename: options.testCacheFilename
     })
     const untrustedResolver = createDNSResolver(options.untrustedServer)
-    const ipWhitelist = await new IPWhitelist(options.ipWhitelistFilename)
-    const hostnameWhitelist = await new HostnameWhitelist(options.hostnameWhitelistFilename)
-    const router = await new Router({
+    const ipWhitelist = await IPWhitelist.create(options.ipWhitelistFilename)
+    const hostnameWhitelist = await HostnameWhitelist.create(options.hostnameWhitelistFilename)
+    const router = await Router.create({
       tester
     , untrustedResolver
     , ipWhitelist

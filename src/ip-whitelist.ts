@@ -1,19 +1,18 @@
 import { IPv4AddressRange, IPv6AddressRange } from 'address-range'
-import { AsyncConstructor } from 'async-constructor'
 import { readIPListFile } from '@utils/ip-list-file'
 import { isIPv4Address } from '@utils/is-ipv4-address'
 import { isIPv6Address } from '@utils/is-ipv6-address'
 
-export class IPWhitelist extends AsyncConstructor {
-  ipv4!: IPv4AddressRange[]
-  ipv6!: IPv6AddressRange[]
+export class IPWhitelist {
+  private constructor(
+    private ipv4: IPv4AddressRange[]
+  , private ipv6: IPv6AddressRange[]
+  ) {}
 
-  constructor(filename: string) {
-    super(async () => {
-      const { ipv4, ipv6 } = await readIPListFile(filename)
-      this.ipv4 = ipv4
-      this.ipv6 = ipv6
-    })
+  static async create(filename: string): Promise<IPWhitelist> {
+    const { ipv4, ipv6 } = await readIPListFile(filename)
+
+    return new IPWhitelist(ipv4, ipv6)
   }
 
   includes(address: string): boolean {
