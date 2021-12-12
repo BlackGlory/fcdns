@@ -46,7 +46,9 @@ function printMessage(
     const post = isntUndefined(elapsed) ? createPostfix({ elapsed }) : null
 
     let result = `${pre} ${message}`
-    if (post) result += ' ' + post
+    if (post) {
+      result += ' ' + post
+    }
 
     log(result)
   }
@@ -61,7 +63,9 @@ function printError(
     const post = isntUndefined(elapsed) ? createPostfix({ elapsed }) : null
 
     let result = `${pre} ${reason}`
-    if (post) result += ' ' + post
+    if (post) {
+      result += ' ' + post
+    }
 
     log(result)
   }
