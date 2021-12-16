@@ -1,7 +1,14 @@
 import { promises as fs } from 'fs'
-import { IPv4AddressRange, IPv6AddressRange } from 'address-range'
+import { AddressRange, IPv4AddressRange, IPv6AddressRange } from 'address-range'
 import { isIPv4Address } from '@utils/is-ipv4-address'
 import { isIPv6Address } from '@utils/is-ipv6-address'
+
+export async function writeIPListFile(
+  filename: string
+, ranges: AddressRange[]
+): Promise<void> {
+  await fs.writeFile(filename, ranges.join('\n'))
+}
 
 export async function readIPListFile(
   filename: string
