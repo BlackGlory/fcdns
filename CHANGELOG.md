@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/BlackGlory/fcdns/compare/v0.2.7...v0.3.0) (2021-12-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* - The minimum version is Node.js v16
+
+* upgrade dependencies ([c9072dc](https://github.com/BlackGlory/fcdns/commit/c9072dc80e8f6867aca7f0a9d05abec154195f21))
+
 ### [0.2.7](https://github.com/BlackGlory/fcdns/compare/v0.2.6...v0.2.7) (2021-12-12)
 
 ### [0.2.6](https://github.com/BlackGlory/fcdns/compare/v0.2.5...v0.2.6) (2021-10-17)
