@@ -1477,13 +1477,13 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extra-filesystem@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/extra-filesystem/-/extra-filesystem-0.4.0.tgz#be289cd1c0122669e12242fd8243db38c40e5e54"
-  integrity sha512-lbpnum6HpPLlyyyCcnzwOXrwkRlRe+htHz1PM+oDSqlNiG9Alepw9gJ6xZe4hkoJdLUkI37E2v03wO+egndcuQ==
+extra-filesystem@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/extra-filesystem/-/extra-filesystem-0.4.1.tgz#3887cdfbfe323dff27481cf78cf8d66364cb3e3b"
+  integrity sha512-H1pKoR5E0P0rgyhg+/h5/cfD//4ADcS2z7LZRNyAupmIamnHo+bwj7lV3w67Tkb69uEZ1DmU2BBsw9i2+qmyfg==
   dependencies:
     "@blackglory/pass" "^0.1.0"
-    extra-promise "^0.20.0"
+    extra-promise "^0.21.0"
     fs-extra "^10.0.0"
     tmp-promise "^3.0.3"
 
@@ -1511,10 +1511,10 @@ extra-logger@^0.5.5:
     "@blackglory/types" "^0.4.6"
     justypes "^0.1.4"
 
-extra-promise@^0.20.0:
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-0.20.0.tgz#28ebb6285a7ff187b280f58011d66532c75281a1"
-  integrity sha512-i+x315uLOeHv6ofJu4I3VS9yEohQyKAEsN4HTFO2MmkzZOa7VKVFlcKvgPD9NbFBFB15DZQFMxkB6z3EaoLBOg==
+extra-promise@^0.21.0:
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-0.21.0.tgz#855d0a34d344c7b0bd82f9866ee526367c1770b1"
+  integrity sha512-yPJat8oubkp+sK3ONrsIJ651eN1eGsKJY9+valfiY5ihugjpB+L3gWG7/iGiQZgkIZT4i2N71YMA9itLTWgfvw==
   dependencies:
     "@blackglory/errors" "^1.1.2"
     "@blackglory/go" "^0.1.1"
@@ -2090,13 +2090,13 @@ ini@^1.3.2, ini@^1.3.4:
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
 
-internet-number@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/internet-number/-/internet-number-3.0.0.tgz#93404d920f91a2a222b71c9a273a1ef90f480a80"
-  integrity sha512-23pLrcrKKSI9Ljj0on3BRlCm/tanOih3aYHR9pnh6DcjgjYSpxhDv5KcqyWtZ8liZL8zJd6066vNu2kxKwFCwQ==
+internet-number@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/internet-number/-/internet-number-3.0.1.tgz#dac91a569237b56439c0bcda18fbcd5c4a913b17"
+  integrity sha512-zoH2rG8YTMBZ+A5/6HABoLRr8v1nkRbf07rSmhiQ3ozufZsbC1ZJmeeM5P2umeKXXDqC8RYWWEfeLCA0qb68fw==
   dependencies:
     "@blackglory/errors" "^1.1.2"
-    extra-filesystem "^0.4.0"
+    extra-filesystem "^0.4.1"
     get-uri "^4.0.0"
     md5-file "^5.0.0"
 
