@@ -5,6 +5,7 @@
   , "strict": true
   , "skipLibCheck": true
   , "esModuleInterop": true
+  , "newLine": "lf"
   , "baseUrl": "."
   , "paths": {
       "@src/*": ["src/*"]
