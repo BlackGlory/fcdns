@@ -1,5 +1,5 @@
-// native-dns v0.7.0
-declare module 'native-dns' {
+// native-node-dns v0.7.0
+declare module 'native-node-dns' {
   import { EventEmitter } from 'events'
 
   export interface IPacket {

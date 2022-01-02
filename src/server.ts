@@ -1,6 +1,6 @@
 import { createCustomLogger } from './logger'
 import { Router, Target } from './router'
-import * as dns from 'native-dns'
+import * as dns from 'native-node-dns'
 import { IServerInfo } from '@utils/parse-server-info'
 import { map } from 'extra-promise'
 import { getElapsed } from '@utils/get-elapsed'
