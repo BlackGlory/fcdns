@@ -25,13 +25,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s lint build",
+      "pre-commit": "run-s lint build test",
       "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
     }
   },
   "devDependencies": {
     "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
+    "@types/jest": "^27.4.0",
     "@types/ms": "^0.7.31",
     "@types/node": "14",
     "@types/ping": "^0.4.1",
@@ -39,9 +40,12 @@
     "@typescript-eslint/parser": "^5.8.1",
     "eslint": "^8.6.0",
     "husky": "4",
+    "internet-number": "^3.0.1",
+    "jest": "^27.4.7",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
+    "ts-jest": "^27.1.2",
     "tsconfig-paths": "^3.12.0",
     "tscpaths": "^0.0.9",
     "typescript": "^4.5.4"
@@ -61,8 +65,5 @@
     "native-node-dns": "^0.7.6",
     "ping": "^0.4.1",
     "return-style": "^0.12.5"
-  },
-  "optionalDependencies": {
-    "internet-number": "^3.0.1"
   }
 }

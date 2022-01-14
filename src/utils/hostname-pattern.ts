@@ -1,5 +1,5 @@
 export class HostnamePattern {
-  re: RegExp
+  private re: RegExp
 
   constructor(pattern: string) {
     const re = pattern.replace(/\./g, '\\.')
