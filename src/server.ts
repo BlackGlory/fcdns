@@ -1,20 +1,18 @@
-import { createCustomLogger } from './logger'
 import { Router, Target } from './router'
 import * as dns from 'native-node-dns'
 import { IServerInfo } from '@utils/parse-server-info'
 import { map } from 'extra-promise'
-import { getElapsed } from '@utils/get-elapsed'
-import { getTimestamp } from '@utils/get-timestamp'
-import { countup } from '@utils/countup'
 import { ResourceRecordType } from './resource-record-type'
 import { getErrorResultAsync } from 'return-style'
+import { Logger } from 'extra-logger'
 import ms from 'ms'
+import chalk from 'chalk'
 
 interface IStartServerOptions {
   router: Router
   untrustedServer: IServerInfo
   trustedServer: IServerInfo
-  logger: ReturnType<typeof createCustomLogger>
+  logger: Logger
   port: number
 }
 
@@ -31,28 +29,14 @@ export function startServer({
   server.on('socketError', console.error)
   server.on('request', async (req, res) => {
     const answers = await map(req.question, async question => {
-      const id = countup().toString()
-      const startTime = getTimestamp()
-
+      const startTime = Date.now()
       var [err, target] = await getErrorResultAsync(() => router.getTarget(question.name))
       if (err) {
-        logger.error({
-          hostname: question.name
-        , id
-        , reason: `${err}`
-        , timestamp: getTimestamp()
-        , elapsed: getElapsed(startTime)
-        })
+        logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
         return []
       }
 
-      logger.debug({
-        hostname: question.name
-      , id
-      , message: Target[target!]
-      , timestamp: getTimestamp()
-      , elapsed: getElapsed(startTime)
-      })
+      logger.debug(`${formatHostname(question.name)} ${Target[target!]}`, getElapsed(startTime))
 
       const server =
         target === Target.Trusted
@@ -61,23 +45,11 @@ export function startServer({
       var [err, answers] = await getErrorResultAsync(() => resolve(server, question))
 
       if (err) {
-        logger.error({
-          hostname: question.name
-        , id
-        , reason: `${err}`
-        , timestamp: getTimestamp()
-        , elapsed: getElapsed(startTime)
-        })
+        logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
         return []
       }
 
-      logger.info({
-        hostname: question.name
-      , id
-      , message: ResourceRecordType[question.type]
-      , timestamp: getTimestamp()
-      , elapsed: getElapsed(startTime)
-      })
+      logger.info(`${formatHostname(question.name)} ${ResourceRecordType[question.type]}`, getElapsed(startTime))
       return answers!
     })
 
@@ -116,4 +88,12 @@ function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IRes
 
     request.send()
   })
+}
+
+function formatHostname(hostname: string): string {
+  return chalk.cyan(hostname)
+}
+
+function getElapsed(startTime: number): number {
+  return Date.now() - startTime
 }

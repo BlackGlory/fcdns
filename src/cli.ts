@@ -8,8 +8,7 @@ import { Tester } from './tester'
 import { createDNSResolver } from '@utils/create-dns-resolver'
 import { parseLogLevel } from '@utils/parse-log-level'
 import { assert } from '@blackglory/errors'
-import { createCustomLogger } from './logger'
-import { Level } from 'extra-logger'
+import { Level, Logger, TerminalTransport } from 'extra-logger'
 import { parseServerInfo } from '@utils/parse-server-info'
 
 program
@@ -45,7 +44,10 @@ program
     , cacheFilename: options.routeCacheFilename
     , looseMode: options.looseMode
     })
-    const logger = createCustomLogger(options.logLevel)
+    const logger = new Logger({
+      level: options.logLevel
+    , transport: new TerminalTransport({})
+    })
 
     const untrustedServer = parseServerInfo(options.untrustedServer)
     const trustedServer = parseServerInfo(options.trustedServer)
