@@ -947,9 +947,9 @@
   integrity sha512-+XBAjfZmmivILUzO0HwBJoYkAyyySSLg5KCGBDFLomJo0sV6szvVLAf4ANZZ0pfWzgEds5KmGLG9D5hfEqOhaA==
 
 "@types/node@14":
-  version "14.18.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.4.tgz#b722d6c91f156d9359aeb20f2d7d06337b15c603"
-  integrity sha512-swe3lD4izOJWHuxvsZdDFRq6S9i6koJsXOnQKYekhSO5JTizMVirUFgY/bUsaOJQj8oSD4oxmRYPBM/0b6jpdw==
+  version "14.18.12"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.12.tgz#0d4557fd3b94497d793efd4e7d92df2f83b4ef24"
+  integrity sha512-q4jlIR71hUpWTnGhXWcakgkZeHa3CCjcQcnuzU8M891BAWA2jHiziiWEPEkdS5pFsz7H9HJiy8BrK7tBRNrY7A==
 
 "@types/node@>=12":
   version "17.0.21"
@@ -2385,10 +2385,10 @@ extra-lazy@^0.1.0:
   dependencies:
     lodash.once "^4.1.1"
 
-extra-logger@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/extra-logger/-/extra-logger-0.6.1.tgz#96664304bc65b255dd974b15672931f5e4f175f3"
-  integrity sha512-a2mzGh8iBPrsNJqRU+51fQ5kc17Rq5DmkD5d/0kZT5Xy7HsbG2Js8xgUy5XafTbwZJ3D5xnr4sKQfcXgiaWW4A==
+extra-logger@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/extra-logger/-/extra-logger-0.6.2.tgz#2f76722960126b340a7608e4d65c77151a24c0da"
+  integrity sha512-zkKhuxKJdXryXv1FPNn07rDZd3s3cuW2/hFcq+vS0dprjUKelCaIn0JY6S8tKaiRYg2C7thDFvPG5q3YFSXbxw==
   dependencies:
     "@blackglory/types" "^0.6.5"
     chalk "4"
