@@ -6,9 +6,8 @@ import { IPWhitelist } from './ip-whitelist'
 import { HostnameWhitelist } from './hostname-whitelist'
 import { Tester } from './tester'
 import { createDNSResolver } from '@utils/create-dns-resolver'
-import { parseLogLevel } from '@utils/parse-log-level'
 import { assert } from '@blackglory/errors'
-import { Level, Logger, TerminalTransport } from 'extra-logger'
+import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
 import { parseServerInfo } from '@utils/parse-server-info'
 
 program
@@ -80,7 +79,7 @@ function getOptions() {
   assert(/^\d+$/.test(opts.testTimeout), 'The parameter test timeout must be integer')
   const testTimeout = Number.parseInt(opts.testTimeout, 10)
 
-  const logLevel: Level = parseLogLevel(opts.log)
+  const logLevel: Level = stringToLevel(opts.log, Level.Info)
   const looseMode: boolean = opts.looseMode
 
   return {
