@@ -38,10 +38,7 @@ export function startServer({
 
       logger.debug(`${formatHostname(question.name)} ${Target[target!]}`, getElapsed(startTime))
 
-      const server =
-        target === Target.Trusted
-        ? trustedServer
-        : untrustedServer
+      const server = target === Target.Trusted ? trustedServer : untrustedServer
       var [err, answers] = await getErrorResultAsync(() => resolve(server, question))
 
       if (err) {
