@@ -1,9 +1,10 @@
 declare module 'native-node-dns' {
   import { EventEmitter } from 'events'
-  import { NAME_TO_RCODE } from 'native-node-dns-packet'
+  import { NAME_TO_RCODE, NAME_TO_QTYPE } from 'native-node-dns-packet'
 
   export const consts = {
     NAME_TO_RCODE
+  , NAME_TO_QTYPE
   }
 
   export interface IPacket {

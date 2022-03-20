@@ -47,7 +47,7 @@ export function startServer({
       logger.trace(`response: ${JSON.stringify(res)}`)
       return res.send()
     }
-    logger.info(`${formatHostname(question.name)} ${dns.consts.NAME_TO_RCODE[question.type]}`, getElapsed(startTime))
+    logger.info(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`, getElapsed(startTime))
 
     res.header.rcode = response!.header.rcode
     res.answer = response!.answer
