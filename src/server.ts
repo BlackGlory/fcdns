@@ -1,8 +1,6 @@
 import { Router, Target } from './router'
 import * as dns from 'native-node-dns'
 import { IServerInfo } from '@utils/parse-server-info'
-import { map } from 'extra-promise'
-import { ResourceRecordType } from './resource-record-type'
 import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import ms from 'ms'
@@ -49,7 +47,7 @@ export function startServer({
       logger.trace(`response: ${JSON.stringify(res)}`)
       return res.send()
     }
-    logger.info(`${formatHostname(question.name)} ${ResourceRecordType[question.type]}`, getElapsed(startTime))
+    logger.info(`${formatHostname(question.name)} ${dns.consts.NAME_TO_RCODE[question.type]}`, getElapsed(startTime))
 
     res.header.rcode = response!.header.rcode
     res.answer = response!.answer
