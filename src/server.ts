@@ -5,6 +5,7 @@ import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import ms from 'ms'
 import chalk from 'chalk'
+import { RecordType } from './record-types'
 
 interface IStartServerOptions {
   router: Router
@@ -47,7 +48,7 @@ export function startServer({
       logger.trace(`response: ${JSON.stringify(res)}`)
       return res.send()
     }
-    logger.info(`${formatHostname(question.name)} ${dns.consts.NAME_TO_QTYPE[question.type]}`, getElapsed(startTime))
+    logger.info(`${formatHostname(question.name)} ${RecordType[question.type]}`, getElapsed(startTime))
 
     res.header.rcode = response!.header.rcode
     res.answer = response!.answer
