@@ -28,41 +28,43 @@ export function startServer({
   server.on('error', console.error)
   server.on('socketError', console.error)
   server.on('request', async (req, res) => {
-    const answers = await map(req.question, async question => {
-      const startTime = Date.now()
-      var [err, target] = await getErrorResultAsync(() => router.getTarget(question.name))
-      if (err) {
-        logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
-        return []
-      }
+    logger.trace(`request: ${JSON.stringify(req)}`)
 
-      logger.debug(`${formatHostname(question.name)} ${Target[target!]}`, getElapsed(startTime))
+    res.header.rcode = dns.consts.NAME_TO_RCODE.SERVFAIL
 
-      const server = target === Target.Trusted ? trustedServer : untrustedServer
-      var [err, answers] = await getErrorResultAsync(() => resolve(server, question))
+    const startTime = Date.now()
+    const question = req.question[0]
+    var [err, target] = await getErrorResultAsync(() => router.getTarget(question.name))
+    if (err) {
+      logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
+      logger.trace(`response: ${JSON.stringify(res)}`)
+      return res.send()
+    }
+    logger.debug(`${formatHostname(question.name)} ${Target[target!]}`, getElapsed(startTime))
 
-      if (err) {
-        logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
-        return []
-      }
+    const server = target === Target.Trusted ? trustedServer : untrustedServer
+    var [err, response] = await getErrorResultAsync(() => resolve(server, question))
+    if (err) {
+      logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
+      logger.trace(`response: ${JSON.stringify(res)}`)
+      return res.send()
+    }
+    logger.info(`${formatHostname(question.name)} ${ResourceRecordType[question.type]}`, getElapsed(startTime))
 
-      logger.info(`${formatHostname(question.name)} ${ResourceRecordType[question.type]}`, getElapsed(startTime))
-      return answers!
-    })
+    res.header.rcode = response!.header.rcode
+    res.answer = response!.answer
+    res.authority = response!.authority
 
-    answers
-      .flat()
-      .forEach(answer => res.answer.push(answer))
-
+    logger.trace(`response: ${JSON.stringify(res)}`)
     res.send()
   })
 
   return server.serve(port)
 }
 
-function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IResourceRecord[]> {
+function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPacket> {
   return new Promise((resolve, reject) => {
-    const answers: dns.IResourceRecord[] = []
+    let response: dns.IPacket
     const request = dns.Request({
       question
     , server: {
@@ -77,10 +79,10 @@ function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IRes
 
     request.on('timeout', () => reject())
     request.on('cancelled', () => reject())
-    request.on('end', () => resolve(answers))
+    request.on('end', () => resolve(response))
     request.on('message', (err, msg) => {
       if (err) return reject(err)
-      msg.answer.forEach(answer => answers.push(answer))
+      response = msg
     })
 
     request.send()

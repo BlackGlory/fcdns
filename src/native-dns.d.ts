@@ -1,16 +1,34 @@
 // native-node-dns v0.7.0
 declare module 'native-node-dns' {
   import { EventEmitter } from 'events'
+  import { NAME_TO_RCODE } from 'native-node-dns-packet'
+
+  export const consts = {
+    NAME_TO_RCODE
+  }
 
   export interface IPacket {
-    header: unknown
-
+    header: IHeader
     question: IQuestion[]
     answer: IResourceRecord[]
     authority: IResourceRecord[]
     additional: IResourceRecord[]
 
     send(): void
+  }
+
+  export interface IHeader {
+    aa: number
+    id: number
+    opcode: number
+    qr: number
+    ra: number
+    rcode: number
+    rd: number
+    res1: number
+    res2: number
+    res3: number
+    tc: number
   }
 
   export interface IQuestion {
