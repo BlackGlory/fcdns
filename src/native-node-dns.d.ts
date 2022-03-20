@@ -1,4 +1,3 @@
-// native-node-dns v0.7.0
 declare module 'native-node-dns' {
   import { EventEmitter } from 'events'
   import { NAME_TO_RCODE } from 'native-node-dns-packet'

@@ -1,4 +1,4 @@
-declare module 'native-node-dns' {
+declare module 'native-node-dns-packet' {
   export const NAME_TO_RCODE = {
     NOERROR: 0
   , FORMERR: 1
