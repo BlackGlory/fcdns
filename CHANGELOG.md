@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.10](https://github.com/BlackGlory/fcdns/compare/v0.3.9...v0.3.10) (2022-03-23)
+
+
+### Bug Fixes
+
+* edge case ([9162617](https://github.com/BlackGlory/fcdns/commit/9162617e2ace75b22e418674320f79858bbdc959))
+
 ### [0.3.9](https://github.com/BlackGlory/fcdns/compare/v0.3.8...v0.3.9) (2022-03-20)
 
 
