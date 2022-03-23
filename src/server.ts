@@ -78,7 +78,13 @@ function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPac
 
     request.on('timeout', () => reject())
     request.on('cancelled', () => reject())
-    request.on('end', () => resolve(response))
+    request.on('end', () => {
+      if (response) {
+        resolve(response)
+      } else {
+        reject(new Error('No response'))
+      }
+    })
     request.on('message', (err, msg) => {
       if (err) return reject(err)
       response = msg
