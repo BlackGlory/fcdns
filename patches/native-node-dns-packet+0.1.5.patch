@@ -1,0 +1,14 @@
+diff --git a/node_modules/native-node-dns-packet/packet.js b/node_modules/native-node-dns-packet/packet.js
+index 985b769..cb7b469 100644
+--- a/node_modules/native-node-dns-packet/packet.js
++++ b/node_modules/native-node-dns-packet/packet.js
+@@ -352,7 +352,8 @@ function writeSoa(buff, val, label_index) {
+   assertUndefined(val.minimum, 'SOA record requires "minimum"');
+   namePack(val.primary, buff, label_index);
+   namePack(val.admin, buff, label_index);
+-  buff.writeUInt32BE(val.serial & 0xFFFFFFFF);
++  const serial = val.serial & 0xFFFFFFFF
++  buff.writeUInt32BE(serial < 0 || serial > 4294967295 ? 0 : serial);
+   buff.writeInt32BE(val.refresh & 0xFFFFFFFF);
+   buff.writeInt32BE(val.retry & 0xFFFFFFFF);
+   buff.writeInt32BE(val.expiration & 0xFFFFFFFF);
