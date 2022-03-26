@@ -67,7 +67,6 @@
     "native-node-dns": "^0.7.6",
     "patch-package": "^6.4.7",
     "ping": "^0.4.1",
-    "postinstall-postinstall": "^2.1.0",
     "return-style": "^1.0.0"
   }
 }
