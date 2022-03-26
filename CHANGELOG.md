@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.12](https://github.com/BlackGlory/fcdns/compare/v0.3.11...v0.3.12) (2022-03-26)
+
+
+### Bug Fixes
+
+* try fix the out of range problem about SOA serial ([ebc5275](https://github.com/BlackGlory/fcdns/commit/ebc5275cd7ec3074e07558b52ca93d492919f07c))
+
 ### [0.3.11](https://github.com/BlackGlory/fcdns/compare/v0.3.10...v0.3.11) (2022-03-26)
 
 
