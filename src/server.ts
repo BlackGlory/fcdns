@@ -76,8 +76,8 @@ function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPac
     , try_edns: true
     })
 
-    request.on('timeout', () => reject())
-    request.on('cancelled', () => reject())
+    request.on('timeout', () => reject(new Error('timeout')))
+    request.on('cancelled', () => reject(new Error('cancelled')))
     request.on('end', () => {
       if (response) {
         resolve(response)
