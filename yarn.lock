@@ -4499,7 +4499,7 @@ native-node-dns-cache@>=0.0.3:
     binaryheap ">= 0.0.3"
     native-node-dns-packet ">= 0.1.2"
 
-"native-node-dns-packet@>= 0.1.2", native-node-dns-packet@>=0.1.3:
+"native-node-dns-packet@>= 0.1.2", native-node-dns-packet@>=0.1.3, native-node-dns-packet@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/native-node-dns-packet/-/native-node-dns-packet-0.1.5.tgz#033e3d09764270f74825491de6a096aea15db14d"
   integrity sha512-XEE/pCAsWsh6vkQBjVxBJKz7NvDgZmTUpNDPZ0DTQ8OLCFseRuqtPYSDXEH6rNKAvBblN2nSS/1fhdlo9iJAeA==
