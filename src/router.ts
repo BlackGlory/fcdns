@@ -1,7 +1,7 @@
 import { promises as dns } from 'dns'
 import { Tester } from './tester'
 import { IPWhitelist } from './ip-whitelist'
-import { HostnameWhitelist } from './hostname-whitelist'
+import { HostnameList } from './hostname-list'
 import { readMapFile, writeMapFile, appendMapFile } from '@utils/map-file'
 import { resolveA } from '@utils/resolve-a'
 
@@ -18,7 +18,8 @@ export class Router {
   , private tester: Tester
   , private untrustedResolver: dns.Resolver
   , private ipWhitelist: IPWhitelist
-  , private hostnameWhitelist: HostnameWhitelist
+  , private hostnameWhitelist: HostnameList
+  , private hostnameBlacklist: HostnameList
   ) {}
 
   static async create(options: {
@@ -27,12 +28,14 @@ export class Router {
     tester: Tester
     untrustedResolver: dns.Resolver
     ipWhitelist: IPWhitelist
-    hostnameWhitelist: HostnameWhitelist
+    hostnameWhitelist: HostnameList
+    hostnameBlacklist: HostnameList
   }): Promise<Router> {
     const tester = options.tester
     const untrustedResolver = options.untrustedResolver
     const ipWhitelist = options.ipWhitelist
     const hostnameWhitelist = options.hostnameWhitelist
+    const hostnameBlacklist = options.hostnameBlacklist
     const cacheFilename = options.cacheFilename
     const looseMode = options.looseMode
 
@@ -41,11 +44,21 @@ export class Router {
     // format the file
     await writeMapFile(cacheFilename, cache)
 
-    return new Router(cacheFilename, cache, looseMode, tester, untrustedResolver, ipWhitelist, hostnameWhitelist)
+    return new Router(
+      cacheFilename
+    , cache
+    , looseMode
+    , tester
+    , untrustedResolver
+    , ipWhitelist
+    , hostnameWhitelist
+    , hostnameBlacklist
+    )
   }
 
   async getTarget(hostname: string): Promise<Target> {
     if (this.inHostnameWhitelist(hostname)) return Target.Untrusted
+    if (this.inHostnameBlacklist(hostname)) return Target.Trusted
 
     if (this.cache.has(hostname)) {
       return this.cache.get(hostname)!
@@ -85,6 +98,10 @@ export class Router {
 
   private inHostnameWhitelist(hostname: string): boolean {
     return this.hostnameWhitelist.includes(hostname)
+  }
+
+  private inHostnameBlacklist(hostname: string): boolean {
+    return this.hostnameBlacklist.includes(hostname)
   }
 
   private setCache(hostname: string, result: Target): void {

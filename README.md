@@ -21,6 +21,7 @@ Options:
   --port <port>                   (default: "53")
   --ip-whitelist <filename>       (default: "ip-whitelist.txt")
   --hostname-whitelist <filename> (default: "hostname-whitelist.txt")
+  --hostname-blacklist <filename> (default: "hostname-blacklist.txt")
   --route-cache <filename>        (default: "route.txt")
   --test-cache <filename>         (default: "test.txt")
   --test-timeout <ms>             (default: "200")
@@ -113,6 +114,9 @@ IPv6地址范围示例:
 
 ### 主机名白名单(hostname whitelist)
 主机名白名单用于强制使某些主机名在解析时使用不可信DNS服务器, 其优先级高于fcdns里的其他规则.
+
+### 主机名黑名单(hostname blacklist)
+主机名白名单用于强制使某些主机名在解析时使用可信DNS服务器, 其优先级低于白名单, 高于fcdns里的其他规则.
 
 #### 文件格式
 白名单是一个文本文件, 以行为分隔符存储主机名模式.

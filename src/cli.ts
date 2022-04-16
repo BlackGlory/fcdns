@@ -3,7 +3,7 @@ import { program } from 'commander'
 import { startServer } from './server'
 import { Router } from './router'
 import { IPWhitelist } from './ip-whitelist'
-import { HostnameWhitelist } from './hostname-whitelist'
+import { HostnameList } from './hostname-list'
 import { Tester } from './tester'
 import { createDNSResolver } from '@utils/create-dns-resolver'
 import { assert } from '@blackglory/errors'
@@ -34,12 +34,14 @@ program
     })
     const untrustedResolver = createDNSResolver(options.untrustedServer)
     const ipWhitelist = await IPWhitelist.create(options.ipWhitelistFilename)
-    const hostnameWhitelist = await HostnameWhitelist.create(options.hostnameWhitelistFilename)
+    const hostnameWhitelist = await HostnameList.create(options.hostnameWhitelistFilename)
+    const hostnameBlacklist = await HostnameList.create(options.hostnameBlacklistFilename)
     const router = await Router.create({
       tester
     , untrustedResolver
     , ipWhitelist
     , hostnameWhitelist
+    , hostnameBlacklist
     , cacheFilename: options.routeCacheFilename
     , looseMode: options.looseMode
     })
@@ -73,6 +75,7 @@ function getOptions() {
 
   const ipWhitelistFilename: string = opts.ipWhitelist
   const hostnameWhitelistFilename: string = opts.hostnameWhitelist
+  const hostnameBlacklistFilename: string = opts.hostnameBlacklist
   const routeCacheFilename: string = opts.routeCache
   const testCacheFilename: string = opts.testCache
 
@@ -89,6 +92,7 @@ function getOptions() {
   , port
   , ipWhitelistFilename
   , hostnameWhitelistFilename
+  , hostnameBlacklistFilename
   , routeCacheFilename
   , testCacheFilename
   , testTimeout
