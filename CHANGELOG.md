@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.15](https://github.com/BlackGlory/fcdns/compare/v0.3.14...v0.3.15) (2022-04-16)
+
+
+### Bug Fixes
+
+* hostname blacklist ([0e21a21](https://github.com/BlackGlory/fcdns/commit/0e21a214c13633ee4a3b2fe6353ae97d72f3fa65))
+
 ### [0.3.14](https://github.com/BlackGlory/fcdns/compare/v0.3.13...v0.3.14) (2022-04-16)
 
 
