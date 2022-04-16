@@ -20,6 +20,7 @@ program
   .option('--port <port>', '', '53')
   .option('--ip-whitelist <filename>', '', 'ip-whitelist.txt')
   .option('--hostname-whitelist <filename>', '', 'hostname-whitelist.txt')
+  .option('--hostname-blacklist <filename>', '', 'hostname-blacklist.txt')
   .option('--route-cache <filename>', '', 'route.txt')
   .option('--test-cache <filename>', '', 'test.txt')
   .option('--test-timeout <ms>', '', '200')
