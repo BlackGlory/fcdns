@@ -25,7 +25,6 @@ program
   .option('--test-cache <filename>', '', 'test.txt')
   .option('--test-timeout <ms>', '', '200')
   .option('--log <level>', '', 'info')
-  .option('--loose-mode')
   .action(async () => {
     const options = getOptions()
     const tester = await Tester.create({
@@ -44,7 +43,6 @@ program
     , hostnameWhitelist
     , hostnameBlacklist
     , cacheFilename: options.routeCacheFilename
-    , looseMode: options.looseMode
     })
     const logger = new Logger({
       level: options.logLevel
@@ -84,7 +82,6 @@ function getOptions() {
   const testTimeout = Number.parseInt(opts.testTimeout, 10)
 
   const logLevel: Level = stringToLevel(opts.log, Level.Info)
-  const looseMode: boolean = opts.looseMode
 
   return {
     testServer
@@ -98,6 +95,5 @@ function getOptions() {
   , testCacheFilename
   , testTimeout
   , logLevel
-  , looseMode
   }
 }

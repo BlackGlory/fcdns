@@ -4,7 +4,7 @@ import { IPWhitelist } from './ip-whitelist'
 import { HostnameList } from './hostname-list'
 import { readMapFile, writeMapFile, appendMapFile } from '@utils/map-file'
 import { resolveA } from '@utils/resolve-a'
-import { reusePendingPromise } from 'extra-promise'
+import { go } from '@blackglory/prelude'
 
 export enum RouteResult {
   UntrustedServer = 0
@@ -16,7 +16,6 @@ export class Router {
   private constructor(
     private cacheFilename: string
   , private cache: Map<string, RouteResult>
-  , private looseMode: boolean
   , private tester: Tester
   , private untrustedResolver: dns.Resolver
   , private ipWhitelist: IPWhitelist
@@ -25,7 +24,6 @@ export class Router {
   ) {}
 
   static async create(options: {
-    looseMode: boolean
     cacheFilename: string
     tester: Tester
     untrustedResolver: dns.Resolver
@@ -39,17 +37,15 @@ export class Router {
     const hostnameWhitelist = options.hostnameWhitelist
     const hostnameBlacklist = options.hostnameBlacklist
     const cacheFilename = options.cacheFilename
-    const looseMode = options.looseMode
 
     const cache = await readMapFile<string, RouteResult>(cacheFilename)
 
-    // format the file
+    // rewrite the file for compression
     await writeMapFile(cacheFilename, cache)
 
     return new Router(
       cacheFilename
     , cache
-    , looseMode
     , tester
     , untrustedResolver
     , ipWhitelist
@@ -58,40 +54,40 @@ export class Router {
     )
   }
 
-  route = reusePendingPromise(async (hostname: string): Promise<RouteResult> => {
+  async route(hostname: string): Promise<RouteResult> {
     const result = await this.routeByLocal(hostname)
-    if (result) {
-      return result
-    } else {
-      if (this.looseMode) {
-        queueMicrotask(() => this.routeByNetwork(hostname))
-        return RouteResult.UntrustedServer
-      } else {
-        return await this.routeByNetwork(hostname)
-      }
+    switch (result) {
+      case RouteResult.UntrustedServer:
+      case RouteResult.TrustedServer:
+        return result
+      default: return await go(async () => {
+        const result = await this.routeByNetwork(hostname)
+        switch (result) {
+          case RouteResult.UntrustedServer:
+          case RouteResult.TrustedServer:
+            this.setCache(hostname, result)
+          default: return result
+        }
+      })
     }
-  })
+  }
 
-  private async routeByLocal(hostname: string): Promise<RouteResult | null> {
+  private async routeByLocal(hostname: string): Promise<RouteResult> {
     if (this.inHostnameWhitelist(hostname)) return RouteResult.UntrustedServer
     if (this.inHostnameBlacklist(hostname)) return RouteResult.TrustedServer
     if (this.cache.has(hostname)) return this.cache.get(hostname)!
-
-    return null
+    return RouteResult.Unresolved
   }
 
   private async routeByNetwork(hostname: string): Promise<RouteResult> {
     if (await this.tester.isPoisoned(hostname)) {
-      this.setCache(hostname, RouteResult.TrustedServer)
       return RouteResult.TrustedServer
     } else {
       const addresses = await resolveA(this.untrustedResolver, hostname)
       if (addresses.length > 0) {
         if (this.inIPWhitelist(addresses)) {
-          this.setCache(hostname, RouteResult.UntrustedServer)
           return RouteResult.UntrustedServer
         } else {
-          this.setCache(hostname, RouteResult.TrustedServer)
           return RouteResult.TrustedServer
         }
       } else {

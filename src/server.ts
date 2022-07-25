@@ -6,7 +6,6 @@ import { Logger } from 'extra-logger'
 import ms from 'ms'
 import chalk from 'chalk'
 import { RecordType } from './record-types'
-import { reusePendingPromise } from 'extra-promise'
 
 interface IStartServerOptions {
   router: Router
@@ -68,40 +67,38 @@ export function startServer({
   server.serve(port)
 }
 
-const resolve = reusePendingPromise(
-  function (server: IServerInfo, question: dns.IQuestion): Promise<dns.IPacket> {
-    return new Promise((resolve, reject) => {
-      let response: dns.IPacket
-      const request = dns.Request({
-        question
-      , server: {
-          address: server.host
-        , port: server.port
-        , type: 'udp'
-        }
-      , timeout: ms('30s')
-      , cache: false
-      , try_edns: true
-      })
-
-      request.on('timeout', () => reject(new Error('timeout')))
-      request.on('cancelled', () => reject(new Error('cancelled')))
-      request.on('end', () => {
-        if (response) {
-          resolve(response)
-        } else {
-          reject(new Error('No response'))
-        }
-      })
-      request.on('message', (err, msg) => {
-        if (err) return reject(err)
-        response = msg
-      })
-
-      request.send()
+function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPacket> {
+  return new Promise((resolve, reject) => {
+    let response: dns.IPacket
+    const request = dns.Request({
+      question
+    , server: {
+        address: server.host
+      , port: server.port
+      , type: 'udp'
+      }
+    , timeout: ms('30s')
+    , cache: false
+    , try_edns: true
     })
-  }
-)
+
+    request.on('timeout', () => reject(new Error('timeout')))
+    request.on('cancelled', () => reject(new Error('cancelled')))
+    request.on('end', () => {
+      if (response) {
+        resolve(response)
+      } else {
+        reject(new Error('No response'))
+      }
+    })
+    request.on('message', (err, msg) => {
+      if (err) return reject(err)
+      response = msg
+    })
+
+    request.send()
+  })
+}
 
 function formatHostname(hostname: string): string {
   return chalk.cyan(hostname)
