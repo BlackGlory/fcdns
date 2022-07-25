@@ -33,9 +33,9 @@ export function startServer({
 
     const startTime = Date.now()
     const question = req.question[0]
-    var [err, result] = await getErrorResultAsync(() => router.route(question.name))
-    if (err) {
-      logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
+    const [err1, result] = await getErrorResultAsync(() => router.route(question.name))
+    if (err1) {
+      logger.error(`${formatHostname(question.name)} ${err1}`, getElapsed(startTime))
       logger.trace(`response: ${JSON.stringify(res)}`)
       return res.send()
     }
@@ -45,9 +45,9 @@ export function startServer({
     )
 
     const server = result === RouteResult.TrustedServer ? trustedServer : untrustedServer
-    var [err, response] = await getErrorResultAsync(() => resolve(server, question))
-    if (err) {
-      logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
+    const [err2, response] = await getErrorResultAsync(() => resolve(server, question))
+    if (err2) {
+      logger.error(`${formatHostname(question.name)} ${err2}`, getElapsed(startTime))
       logger.trace(`response: ${JSON.stringify(res)}`)
       return res.send()
     }
