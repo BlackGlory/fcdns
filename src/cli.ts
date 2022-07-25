@@ -63,7 +63,19 @@ program
   .parse()
 
 function getOptions() {
-  const opts = program.opts()
+  const opts = program.opts<{
+    testServer: string
+    untrustedServer: string
+    trustedServer: string
+    port: string
+    ipWhitelist: string
+    hostnameWhitelist: string
+    hostnameBlacklist: string
+    routeCache: string
+    testCache: string
+    testTimeout: string
+    log: string
+  }>()
 
   const testServer: string = opts.testServer
   const untrustedServer: string = opts.untrustedServer
