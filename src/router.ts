@@ -4,16 +4,18 @@ import { IPWhitelist } from './ip-whitelist'
 import { HostnameList } from './hostname-list'
 import { readMapFile, writeMapFile, appendMapFile } from '@utils/map-file'
 import { resolveA } from '@utils/resolve-a'
+import { reusePendingPromise } from 'extra-promise'
 
-export enum Target {
-  Untrusted = 0
-, Trusted = 1
+export enum RouteResult {
+  UntrustedServer = 0
+, TrustedServer = 1
+, Unresolved = 2
 }
 
 export class Router {
   private constructor(
     private cacheFilename: string
-  , private cache: Map<string, Target>
+  , private cache: Map<string, RouteResult>
   , private looseMode: boolean
   , private tester: Tester
   , private untrustedResolver: dns.Resolver
@@ -39,7 +41,7 @@ export class Router {
     const cacheFilename = options.cacheFilename
     const looseMode = options.looseMode
 
-    const cache = await readMapFile<string, Target>(cacheFilename)
+    const cache = await readMapFile<string, RouteResult>(cacheFilename)
 
     // format the file
     await writeMapFile(cacheFilename, cache)
@@ -56,38 +58,45 @@ export class Router {
     )
   }
 
-  async getTarget(hostname: string): Promise<Target> {
-    if (this.inHostnameWhitelist(hostname)) return Target.Untrusted
-    if (this.inHostnameBlacklist(hostname)) return Target.Trusted
-
-    if (this.cache.has(hostname)) {
-      return this.cache.get(hostname)!
+  route = reusePendingPromise(async (hostname: string): Promise<RouteResult> => {
+    const result = await this.routeByLocal(hostname)
+    if (result) {
+      return result
     } else {
       if (this.looseMode) {
-        queueMicrotask(() => this.getTargetWithoutCache(hostname))
-        return Target.Untrusted
+        queueMicrotask(() => this.routeByNetwork(hostname))
+        return RouteResult.UntrustedServer
       } else {
-        return await this.getTargetWithoutCache(hostname)
+        return await this.routeByNetwork(hostname)
       }
     }
+  })
+
+  private async routeByLocal(hostname: string): Promise<RouteResult | null> {
+    if (this.inHostnameWhitelist(hostname)) return RouteResult.UntrustedServer
+    if (this.inHostnameBlacklist(hostname)) return RouteResult.TrustedServer
+    if (this.cache.has(hostname)) return this.cache.get(hostname)!
+
+    return null
   }
 
-  private async getTargetWithoutCache(hostname: string): Promise<Target> {
+  private async routeByNetwork(hostname: string): Promise<RouteResult> {
     if (await this.tester.isPoisoned(hostname)) {
-      this.setCache(hostname, Target.Trusted)
-      return Target.Trusted
+      this.setCache(hostname, RouteResult.TrustedServer)
+      return RouteResult.TrustedServer
     } else {
       const addresses = await resolveA(this.untrustedResolver, hostname)
       if (addresses.length > 0) {
         if (this.inIPWhitelist(addresses)) {
-          this.setCache(hostname, Target.Untrusted)
-          return Target.Untrusted
+          this.setCache(hostname, RouteResult.UntrustedServer)
+          return RouteResult.UntrustedServer
         } else {
-          this.setCache(hostname, Target.Trusted)
-          return Target.Trusted
+          this.setCache(hostname, RouteResult.TrustedServer)
+          return RouteResult.TrustedServer
         }
       } else {
-        return Target.Trusted
+        // 该主机名没有A记录.
+        return RouteResult.Unresolved
       }
     }
   }
@@ -104,7 +113,7 @@ export class Router {
     return this.hostnameBlacklist.includes(hostname)
   }
 
-  private setCache(hostname: string, result: Target): void {
+  private setCache(hostname: string, result: RouteResult): void {
     this.cache.set(hostname, result)
     appendMapFile(this.cacheFilename, hostname, result)
   }

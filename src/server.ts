@@ -1,4 +1,4 @@
-import { Router, Target } from './router'
+import { Router, RouteResult } from './router'
 import * as dns from 'native-node-dns'
 import { IServerInfo } from '@utils/parse-server-info'
 import { getErrorResultAsync } from 'return-style'
@@ -6,6 +6,7 @@ import { Logger } from 'extra-logger'
 import ms from 'ms'
 import chalk from 'chalk'
 import { RecordType } from './record-types'
+import { reusePendingPromise } from 'extra-promise'
 
 interface IStartServerOptions {
   router: Router
@@ -21,7 +22,7 @@ export function startServer({
 , router
 , trustedServer
 , untrustedServer
-}: IStartServerOptions) {
+}: IStartServerOptions): void {
   const server = dns.createServer()
 
   server.on('error', console.error)
@@ -33,18 +34,18 @@ export function startServer({
 
     const startTime = Date.now()
     const question = req.question[0]
-    var [err, target] = await getErrorResultAsync(() => router.getTarget(question.name))
+    var [err, result] = await getErrorResultAsync(() => router.route(question.name))
     if (err) {
       logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
       logger.trace(`response: ${JSON.stringify(res)}`)
       return res.send()
     }
     logger.debug(
-      `${formatHostname(question.name)} ${Target[target!]}`
+      `${formatHostname(question.name)} ${RouteResult[result!]}`
     , getElapsed(startTime)
     )
 
-    const server = target === Target.Trusted ? trustedServer : untrustedServer
+    const server = result === RouteResult.TrustedServer ? trustedServer : untrustedServer
     var [err, response] = await getErrorResultAsync(() => resolve(server, question))
     if (err) {
       logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
@@ -64,41 +65,43 @@ export function startServer({
     res.send()
   })
 
-  return server.serve(port)
+  server.serve(port)
 }
 
-function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPacket> {
-  return new Promise((resolve, reject) => {
-    let response: dns.IPacket
-    const request = dns.Request({
-      question
-    , server: {
-        address: server.host
-      , port: server.port
-      , type: 'udp'
-      }
-    , timeout: ms('30s')
-    , cache: false
-    , try_edns: true
-    })
+const resolve = reusePendingPromise(
+  function (server: IServerInfo, question: dns.IQuestion): Promise<dns.IPacket> {
+    return new Promise((resolve, reject) => {
+      let response: dns.IPacket
+      const request = dns.Request({
+        question
+      , server: {
+          address: server.host
+        , port: server.port
+        , type: 'udp'
+        }
+      , timeout: ms('30s')
+      , cache: false
+      , try_edns: true
+      })
 
-    request.on('timeout', () => reject(new Error('timeout')))
-    request.on('cancelled', () => reject(new Error('cancelled')))
-    request.on('end', () => {
-      if (response) {
-        resolve(response)
-      } else {
-        reject(new Error('No response'))
-      }
-    })
-    request.on('message', (err, msg) => {
-      if (err) return reject(err)
-      response = msg
-    })
+      request.on('timeout', () => reject(new Error('timeout')))
+      request.on('cancelled', () => reject(new Error('cancelled')))
+      request.on('end', () => {
+        if (response) {
+          resolve(response)
+        } else {
+          reject(new Error('No response'))
+        }
+      })
+      request.on('message', (err, msg) => {
+        if (err) return reject(err)
+        response = msg
+      })
 
-    request.send()
-  })
-}
+      request.send()
+    })
+  }
+)
 
 function formatHostname(hostname: string): string {
   return chalk.cyan(hostname)
