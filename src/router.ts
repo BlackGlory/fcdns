@@ -72,7 +72,7 @@ export class Router {
     }
   }
 
-  async getTargetWithoutCache(hostname: string): Promise<Target> {
+  private async getTargetWithoutCache(hostname: string): Promise<Target> {
     if (await this.tester.isPoisoned(hostname)) {
       this.setCache(hostname, Target.Trusted)
       return Target.Trusted

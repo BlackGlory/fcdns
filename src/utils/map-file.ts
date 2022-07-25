@@ -14,7 +14,10 @@ export async function readMapFile<T, U>(
   return new Map(entries)
 }
 
-export async function writeMapFile<T, U>(filename: string, map: Map<T, U>): Promise<void> {
+export async function writeMapFile<T, U>(
+  filename: string
+, map: Map<T, U>
+): Promise<void> {
   const text = new IterableOperator(map.entries())
     .map(x => JSON.stringify(x))
     .toArray()
@@ -23,6 +26,10 @@ export async function writeMapFile<T, U>(filename: string, map: Map<T, U>): Prom
   await fs.writeFile(filename, text + '\n')
 }
 
-export async function appendMapFile<T, U>(filename: string, key: T, value: U): Promise<void> {
+export async function appendMapFile<T, U>(
+  filename: string
+, key: T
+, value: U
+): Promise<void> {
   await fs.appendFile(filename, JSON.stringify([key, value]) + '\n')
 }

@@ -39,7 +39,10 @@ export function startServer({
       logger.trace(`response: ${JSON.stringify(res)}`)
       return res.send()
     }
-    logger.debug(`${formatHostname(question.name)} ${Target[target!]}`, getElapsed(startTime))
+    logger.debug(
+      `${formatHostname(question.name)} ${Target[target!]}`
+    , getElapsed(startTime)
+    )
 
     const server = target === Target.Trusted ? trustedServer : untrustedServer
     var [err, response] = await getErrorResultAsync(() => resolve(server, question))
@@ -48,7 +51,10 @@ export function startServer({
       logger.trace(`response: ${JSON.stringify(res)}`)
       return res.send()
     }
-    logger.info(`${formatHostname(question.name)} ${RecordType[question.type]}`, getElapsed(startTime))
+    logger.info(
+      `${formatHostname(question.name)} ${RecordType[question.type]}`
+    , getElapsed(startTime)
+    )
 
     res.header.rcode = response!.header.rcode
     res.answer = response!.answer
