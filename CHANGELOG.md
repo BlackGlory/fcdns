@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/BlackGlory/fcdns/compare/v0.3.16...v0.4.0) (2022-07-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* - Remove loose mode, because it doesn't work very well
+- Remove microcaching, as caching is best implemented as a relay server
+
+### Features
+
+* remove loose mode and microcaching ([986e58f](https://github.com/BlackGlory/fcdns/commit/986e58f4cc88ab3c77f3149e7a5dc644ee370d79))
+
 ### [0.3.16](https://github.com/BlackGlory/fcdns/compare/v0.3.15...v0.3.16) (2022-07-25)
 
 ### [0.3.15](https://github.com/BlackGlory/fcdns/compare/v0.3.14...v0.3.15) (2022-04-16)
