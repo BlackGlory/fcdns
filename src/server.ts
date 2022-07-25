@@ -56,9 +56,9 @@ export function startServer({
     , getElapsed(startTime)
     )
 
-    res.header.rcode = response!.header.rcode
-    res.answer = response!.answer
-    res.authority = response!.authority
+    res.header.rcode = response.header.rcode
+    res.answer = response.answer
+    res.authority = response.authority
 
     logger.trace(`response: ${JSON.stringify(res)}`)
     res.send()
