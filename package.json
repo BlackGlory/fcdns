@@ -1,6 +1,6 @@
 {
   "name": "fcdns",
-  "version": "0.3.15",
+  "version": "0.3.16",
   "description": "DNS relay server with fact-checking.",
   "keywords": [
     "dns"
