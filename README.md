@@ -19,6 +19,7 @@ Options:
   --untrusted-server <server>
   --trusted-server <server>
   --port [port]                   (default: "53")
+  --timeout [seconds]             (default: "30")
   --ip-whitelist [filename]       (default: "ip-whitelist.txt")
   --hostname-whitelist [filename] (default: "hostname-whitelist.txt")
   --hostname-blacklist [filename] (default: "hostname-blacklist.txt")

@@ -3,7 +3,6 @@ import * as dns from 'native-node-dns'
 import { IServerInfo } from '@utils/parse-server-info'
 import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
-import ms from 'ms'
 import chalk from 'chalk'
 import { RecordType } from './record-types'
 
@@ -13,11 +12,13 @@ interface IStartServerOptions {
   trustedServer: IServerInfo
   logger: Logger
   port: number
+  timeout: number
 }
 
 export function startServer({
   logger
 , port
+, timeout
 , router
 , trustedServer
 , untrustedServer
@@ -45,7 +46,11 @@ export function startServer({
     )
 
     const server = result === RouteResult.TrustedServer ? trustedServer : untrustedServer
-    const [err2, response] = await getErrorResultAsync(() => resolve(server, question))
+    const [err2, response] = await getErrorResultAsync(() => resolve(
+      server
+    , question
+    , timeout
+    ))
     if (err2) {
       logger.error(`${formatHostname(question.name)} ${err2}`, getElapsed(startTime))
       logger.trace(`response: ${JSON.stringify(res)}`)
@@ -67,7 +72,11 @@ export function startServer({
   server.serve(port)
 }
 
-function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPacket> {
+function resolve(
+  server: IServerInfo
+, question: dns.IQuestion
+, timeout: number
+): Promise<dns.IPacket> {
   return new Promise((resolve, reject) => {
     let response: dns.IPacket
     const request = dns.Request({
@@ -77,7 +86,7 @@ function resolve(server: IServerInfo, question: dns.IQuestion): Promise<dns.IPac
       , port: server.port
       , type: 'udp'
       }
-    , timeout: ms('30s')
+    , timeout
     , cache: false
     , try_edns: true
     })

@@ -18,6 +18,7 @@ program
   .requiredOption('--untrusted-server <server>')
   .requiredOption('--trusted-server <server>')
   .option('--port [port]', '', '53')
+  .option('--timeout [seconds]', '', '30')
   .option('--ip-whitelist [filename]', '', 'ip-whitelist.txt')
   .option('--hostname-whitelist [filename]', '', 'hostname-whitelist.txt')
   .option('--hostname-blacklist [filename]', '', 'hostname-blacklist.txt')
@@ -57,6 +58,7 @@ program
     , logger
     , trustedServer
     , untrustedServer
+    , timeout: options.timeout
     , port: options.port
     })
   })
@@ -68,6 +70,7 @@ function getOptions() {
     untrustedServer: string
     trustedServer: string
     port: string
+    timeout: string
     ipWhitelist: string
     hostnameWhitelist: string
     hostnameBlacklist: string
@@ -83,6 +86,9 @@ function getOptions() {
 
   assert(/^\d+$/.test(opts.port), 'The parameter port must be integer')
   const port: number = Number.parseInt(opts.port, 10)
+
+  assert(/^\d+$/.test(opts.timeout), 'The parameter timeout must be integer')
+  const timeout: number = Number.parseInt(opts.port, 10) * 1000
 
   const ipWhitelistFilename: string = opts.ipWhitelist
   const hostnameWhitelistFilename: string = opts.hostnameWhitelist
@@ -100,6 +106,7 @@ function getOptions() {
   , untrustedServer
   , trustedServer
   , port
+  , timeout
   , ipWhitelistFilename
   , hostnameWhitelistFilename
   , hostnameBlacklistFilename
