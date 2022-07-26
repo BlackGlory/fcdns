@@ -55,7 +55,7 @@ export class Router {
   }
 
   async route(hostname: string): Promise<RouteResult> {
-    const result = await this.routeByLocal(hostname)
+    const result = this.routeByLocal(hostname)
     switch (result) {
       case RouteResult.UntrustedServer:
       case RouteResult.TrustedServer:
@@ -72,7 +72,7 @@ export class Router {
     }
   }
 
-  private async routeByLocal(hostname: string): Promise<RouteResult> {
+  private routeByLocal(hostname: string): RouteResult {
     if (this.inHostnameWhitelist(hostname)) return RouteResult.UntrustedServer
     if (this.inHostnameBlacklist(hostname)) return RouteResult.TrustedServer
     if (this.cache.has(hostname)) return this.cache.get(hostname)!
