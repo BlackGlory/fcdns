@@ -5,29 +5,31 @@
   "keywords": [
     "dns"
   ],
-  "bin": "lib/cli.js",
+  "bin": "dist/cli.cjs",
   "files": [
-    "patches",
-    "lib"
+    "dist"
   ],
   "repository": "git@github.com:BlackGlory/fcdns.git",
   "author": "BlackGlory <woshenmedoubuzhidao@blackglory.me>",
   "license": "MIT",
   "scripts": {
     "postinstall": "patch-package",
+    "prepublishOnly": "run-s clean build bundle",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src",
     "test": "jest --config jest.config.js",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:coverage": "jest --coverage --config jest.config.js",
-    "clean": "rimraf lib",
+    "clean": "rimraf lib dist",
     "build": "run-s build:*",
     "build:compile": "tsc --project tsconfig.build.json",
     "build:patch": "tscpaths --project tsconfig.build.json --src ./src --out ./lib",
+    "bundle": "webpack --stats-error-details",
+    "smoke": "node dist/cli.cjs --help",
     "release": "standard-version"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s lint build test",
+      "pre-commit": "run-s clean lint build test bundle smoke",
       "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
     }
   },
@@ -49,7 +51,9 @@
     "ts-jest": "^27.1.4",
     "tsconfig-paths": "^3.14.1",
     "tscpaths": "^0.0.9",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   },
   "dependencies": {
     "@blackglory/errors": "^2.2.1",
