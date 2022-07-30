@@ -13,6 +13,7 @@
   "author": "BlackGlory <woshenmedoubuzhidao@blackglory.me>",
   "license": "MIT",
   "scripts": {
+    "deduplicate": "yarn-deduplicate",
     "postinstall": "patch-package",
     "prepublishOnly": "run-s clean build bundle",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src",
@@ -53,7 +54,8 @@
     "tscpaths": "^0.0.9",
     "typescript": "^4.7.4",
     "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^4.10.0",
+    "yarn-deduplicate": "^5.0.0"
   },
   "dependencies": {
     "@blackglory/errors": "^2.2.1",
