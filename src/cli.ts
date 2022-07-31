@@ -23,7 +23,7 @@ program
   .option('--hostname-whitelist [filename]', '', 'hostname-whitelist.txt')
   .option('--hostname-blacklist [filename]', '', 'hostname-blacklist.txt')
   .option('--route-cache [filename]', '', 'route.txt')
-  .option('--test-cache <[ilename]', '', 'test.txt')
+  .option('--test-cache [filename]', '', 'test.txt')
   .option('--test-timeout [ms]', '', '200')
   .option('--log [level]', '', 'info')
   .action(async () => {
