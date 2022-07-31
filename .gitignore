@@ -64,5 +64,6 @@ dist
 # Files
 ip-whitelist.txt
 hostname-whitelist.txt
+hostname-blacklist.txt
 test.txt
 route.txt
