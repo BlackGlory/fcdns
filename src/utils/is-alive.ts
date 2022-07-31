@@ -1,6 +1,6 @@
 import { timeout, TimeoutError } from 'extra-promise'
 import { promise as sys } from 'ping'
-import { go } from '@blackglory/go'
+import { go } from '@blackglory/prelude'
 
 export async function isAlive(address: string, timeoutMsecs: number): Promise<boolean> {
   try {

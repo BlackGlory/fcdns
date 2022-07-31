@@ -9,13 +9,20 @@ import { AsyncIterableOperator } from 'iterable-operator/lib/es2018/style/chaini
 import { IPv4AddressRange, IPv6AddressRange, compress } from 'address-range'
 import { go } from '@blackglory/go'
 import { writeIPListFile } from '../src/utils/ip-list-file'
+import { text } from 'extra-prompts'
+import { assert, isntEmptyArray } from '@blackglory/prelude'
 
 go(async () => {
+  const cc = (await text('CC (Use spaces to separate multiple)'))
+    .split(/\s+/)
+    .map(x => x.toUpperCase())
+  assert(isntEmptyArray(cc), 'At least one CC value is required')
+
   const ranges = await go(async () => {
     const filename = await createTempFile()
     try {
       await downloadLatestStatisticsFile(Domain.APNIC, Registry.APNIC, filename)
-      return await parseAddressRangesFromStatisticsFile(filename, ['CN'])
+      return await parseAddressRangesFromStatisticsFile(filename, cc)
     } finally {
       await fs.rm(filename)
     }

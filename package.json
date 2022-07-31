@@ -43,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
     "eslint": "^8.20.0",
+    "extra-prompts": "^0.1.2",
     "husky": "4",
     "internet-number": "^3.0.2",
     "jest": "^27.5.1",
@@ -60,8 +61,7 @@
   },
   "dependencies": {
     "@blackglory/errors": "^2.2.1",
-    "@blackglory/go": "^1.1.1",
-    "@blackglory/types": "^1.2.1",
+    "@blackglory/prelude": "^0.1.3",
     "address-range": "^0.2.9",
     "chalk": "^4.1.2",
     "commander": "^9.4.0",

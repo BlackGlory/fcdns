@@ -6,7 +6,7 @@ import { IPWhitelist } from './ip-whitelist'
 import { HostnameList } from './hostname-list'
 import { Tester } from './tester'
 import { createDNSResolver } from '@utils/create-dns-resolver'
-import { assert } from '@blackglory/errors'
+import { assert } from '@blackglory/prelude'
 import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
 import { parseServerInfo } from '@utils/parse-server-info'
 
