@@ -14,12 +14,13 @@ import { setDynamicTimeoutLoop} from 'extra-timers'
 import ms from 'ms'
 import { youDied } from 'you-died'
 
-process.title = require('../package.json').name
+const { name, version, description } = require('../package.json')
+process.title = name
 
 program
-  .name(require('../package.json').name)
-  .version(require('../package.json').version)
-  .description(require('../package.json').description)
+  .name(name)
+  .version(version)
+  .description(description)
   .requiredOption('--test-server <server>')
   .requiredOption('--untrusted-server <server>')
   .requiredOption('--trusted-server <server>')
