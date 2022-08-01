@@ -38,6 +38,7 @@
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "@types/jest": "^27.4.1",
+    "@types/ms": "^0.7.31",
     "@types/node": "14",
     "@types/ping": "^0.4.1",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
@@ -61,17 +62,21 @@
   "dependencies": {
     "@blackglory/errors": "^2.2.1",
     "@blackglory/prelude": "^0.1.3",
+    "@blackglory/structures": "^0.6.2",
     "address-range": "^0.2.9",
     "chalk": "^4.1.2",
     "commander": "^9.4.0",
     "extra-filesystem": "^0.4.4",
     "extra-logger": "^0.6.8",
     "extra-promise": "^2.3.0",
+    "extra-timers": "^0.2.5",
     "iterable-operator": "^1.1.0",
+    "ms": "^2.1.3",
     "native-node-dns": "0.7.6",
     "native-node-dns-packet": "0.1.5",
     "patch-package": "^6.4.7",
     "ping": "^0.4.2",
-    "return-style": "^1.0.0"
+    "return-style": "^1.0.0",
+    "you-died": "^0.4.0"
   }
 }

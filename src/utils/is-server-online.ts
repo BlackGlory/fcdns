@@ -2,7 +2,10 @@ import { timeout, TimeoutError } from 'extra-promise'
 import { promise as sys } from 'ping'
 import { go } from '@blackglory/prelude'
 
-export async function isAlive(address: string, timeoutMsecs: number): Promise<boolean> {
+export async function isServerOnline(
+  address: string
+, timeoutMsecs: number
+): Promise<boolean> {
   try {
     const result = await Promise.race([
       go(async () => {

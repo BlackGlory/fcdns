@@ -1,10 +1,10 @@
 import { promises as dns } from 'dns'
-import { Tester } from './tester'
-import { IPWhitelist } from './ip-whitelist'
-import { HostnameList } from './hostname-list'
-import { readMapFile, writeMapFile, appendMapFile } from '@utils/map-file'
+import { PoisonTester } from './poison-tester'
+import { IPRanges } from './ip-ranges'
+import { Hostnames } from './hostnames'
+import { Cache } from './cache'
 import { resolveA } from '@utils/resolve-a'
-import { go } from '@blackglory/prelude'
+import { go, isntUndefined } from '@blackglory/prelude'
 
 export enum RouteResult {
   UntrustedServer = 0
@@ -13,45 +13,27 @@ export enum RouteResult {
 }
 
 export class Router {
-  private constructor(
-    private cacheFilename: string
-  , private cache: Map<string, RouteResult>
-  , private tester: Tester
-  , private untrustedResolver: dns.Resolver
-  , private ipWhitelist: IPWhitelist
-  , private hostnameWhitelist: HostnameList
-  , private hostnameBlacklist: HostnameList
-  ) {}
+  private cache: Cache<RouteResult>
+  private poisonTester: PoisonTester
+  private untrustedResolver: dns.Resolver
+  private ipWhitelist: IPRanges
+  private hostnameWhitelist: Hostnames
+  private hostnameBlacklist: Hostnames
 
-  static async create(options: {
-    cacheFilename: string
-    tester: Tester
+  constructor(options: {
+    cache: Cache<RouteResult>
+    poisonTester: PoisonTester
     untrustedResolver: dns.Resolver
-    ipWhitelist: IPWhitelist
-    hostnameWhitelist: HostnameList
-    hostnameBlacklist: HostnameList
-  }): Promise<Router> {
-    const tester = options.tester
-    const untrustedResolver = options.untrustedResolver
-    const ipWhitelist = options.ipWhitelist
-    const hostnameWhitelist = options.hostnameWhitelist
-    const hostnameBlacklist = options.hostnameBlacklist
-    const cacheFilename = options.cacheFilename
-
-    const cache = await readMapFile<string, RouteResult>(cacheFilename)
-
-    // rewrite the file for compression
-    await writeMapFile(cacheFilename, cache)
-
-    return new Router(
-      cacheFilename
-    , cache
-    , tester
-    , untrustedResolver
-    , ipWhitelist
-    , hostnameWhitelist
-    , hostnameBlacklist
-    )
+    ipWhitelist: IPRanges
+    hostnameWhitelist: Hostnames
+    hostnameBlacklist: Hostnames
+  }) {
+    this.cache = options.cache
+    this.poisonTester = options.poisonTester
+    this.untrustedResolver = options.untrustedResolver
+    this.ipWhitelist = options.ipWhitelist
+    this.hostnameWhitelist = options.hostnameWhitelist
+    this.hostnameBlacklist = options.hostnameBlacklist
   }
 
   async route(hostname: string): Promise<RouteResult> {
@@ -65,7 +47,7 @@ export class Router {
         switch (result) {
           case RouteResult.UntrustedServer:
           case RouteResult.TrustedServer:
-            this.setCache(hostname, result)
+            this.cache.set(hostname, result)
           default: return result
         }
       })
@@ -75,12 +57,17 @@ export class Router {
   private routeByLocal(hostname: string): RouteResult {
     if (this.inHostnameWhitelist(hostname)) return RouteResult.UntrustedServer
     if (this.inHostnameBlacklist(hostname)) return RouteResult.TrustedServer
-    if (this.cache.has(hostname)) return this.cache.get(hostname)!
-    return RouteResult.Unresolved
+
+    const result = this.cache.get(hostname)
+    if (isntUndefined(result)) {
+      return result
+    } else {
+      return RouteResult.Unresolved
+    }
   }
 
   private async routeByNetwork(hostname: string): Promise<RouteResult> {
-    if (await this.tester.isPoisoned(hostname)) {
+    if (await this.poisonTester.isHostnamePoisoned(hostname)) {
       return RouteResult.TrustedServer
     } else {
       const addresses = await resolveA(this.untrustedResolver, hostname)
@@ -107,10 +94,5 @@ export class Router {
 
   private inHostnameBlacklist(hostname: string): boolean {
     return this.hostnameBlacklist.includes(hostname)
-  }
-
-  private setCache(hostname: string, result: RouteResult): void {
-    this.cache.set(hostname, result)
-    appendMapFile(this.cacheFilename, hostname, result)
   }
 }
