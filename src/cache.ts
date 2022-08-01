@@ -1,4 +1,3 @@
-import { TrieMap } from '@blackglory/structures'
 import { IterableOperator, AsyncIterableOperator } from 'iterable-operator/lib/es2018/style/chaining'
 import { promises as fs } from 'fs'
 import { ensureFile, readFileLineByLine } from 'extra-filesystem'
@@ -8,7 +7,7 @@ export class Cache<T> {
 
   private constructor(
     private filename: string
-  , private map: TrieMap<string, T>
+  , private map: Map<string, T>
   ) {}
 
   static async create<T>(
@@ -16,7 +15,7 @@ export class Cache<T> {
   ): Promise<Cache<T>> {
     await ensureFile(filename)
 
-    const map = new TrieMap<string, T>()
+    const map = new Map<string, T>()
     const iter = new AsyncIterableOperator(readFileLineByLine(filename))
       .filterAsync(x => !!x)
       .mapAsync(x => JSON.parse(x) as [key: string, value: T])
@@ -60,7 +59,7 @@ export class Cache<T> {
    */
   async write(): Promise<void> {
     const text = new IterableOperator(this.map.entries())
-      .map(([key, value]) => JSON.stringify([key.join(''), value]))
+      .map(([key, value]) => JSON.stringify([key, value]))
       .toArray()
       .join('\n')
 
