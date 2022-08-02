@@ -4,14 +4,12 @@ import { startServer } from './server'
 import { Router, RouteResult } from './router'
 import { IPRanges } from './ip-ranges'
 import { Hostnames } from './hostnames'
-import { PoisonTester } from './poison-tester'
+import { TestResult, PoisonTester } from './poison-tester'
 import { Cache } from './cache'
 import { createDNSResolver } from '@utils/create-dns-resolver'
 import { assert } from '@blackglory/prelude'
 import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
 import { parseServerInfo } from '@utils/parse-server-info'
-import { setDynamicTimeoutLoop} from 'extra-timers'
-import ms from 'ms'
 import { youDied } from 'you-died'
 
 const { name, version, description } = require('../package.json')
@@ -29,21 +27,15 @@ program
   .option('--ip-whitelist [filename]', '', 'ip-whitelist.txt')
   .option('--hostname-whitelist [filename]', '', 'hostname-whitelist.txt')
   .option('--hostname-blacklist [filename]', '', 'hostname-blacklist.txt')
-  .option('--route-cache [filename]', '', 'route.txt')
-  .option('--test-cache [filename]', '', 'test.txt')
+  .option('--route-cache [filename]', '', 'route.db')
+  .option('--test-cache [filename]', '', 'test.db')
   .option('--test-timeout [ms]', '', '200')
   .option('--log [level]', '', 'info')
   .action(async () => {
     const options = getOptions()
 
-    const testCache = await Cache.create<boolean>(options.testCacheFilename)
-    // rewrite the file for compression
-    await testCache.write() // format the file
-    const stopTestCacheFlushTimer = setDynamicTimeoutLoop(ms('1m'), () => testCache.flush())
-    youDied(async () => {
-      stopTestCacheFlushTimer()
-      await testCache.flush()
-    })
+    const testCache = await Cache.create<TestResult>(options.testCacheFilename)
+    youDied(() => testCache.close())
     const poisonTester = new PoisonTester({
       server: options.testServer
     , timeout: options.testTimeout
@@ -51,13 +43,7 @@ program
     })
 
     const routeCache = await Cache.create<RouteResult>(options.routeCacheFilename)
-    // rewrite the file for compression
-    await routeCache.write()
-    const stopRouteCacheFlushTimer = setDynamicTimeoutLoop(ms('1m'), () => routeCache.flush())
-    youDied(async () => {
-      stopRouteCacheFlushTimer()
-      await testCache.flush()
-    })
+    youDied(() => testCache.close())
     const untrustedResolver = createDNSResolver(options.untrustedServer)
     const ipWhitelist = await IPRanges.fromFile(options.ipWhitelistFilename)
     const hostnameWhitelist = await Hostnames.fromFile(options.hostnameWhitelistFilename)

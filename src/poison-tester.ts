@@ -7,16 +7,21 @@ import { Cache } from './cache'
 import { isntUndefined } from '@blackglory/prelude'
 import { promises as dns } from 'dns'
 
+export enum TestResult {
+  NotPoisoned = 0
+, Poisoned = 1
+}
+
 export class PoisonTester {
   private server: string
   private timeout: number
-  private cache: Cache<boolean>
+  private cache: Cache<TestResult>
   private testResolver: dns.Resolver
 
   constructor(options: {
     server: string
     timeout: number
-    cache: Cache<boolean>
+    cache: Cache<TestResult>
   }) {
     this.server = options.server
     this.timeout = options.timeout
@@ -27,7 +32,7 @@ export class PoisonTester {
   /**
    * @throws {ServerUnreachable}
    */
-  async isHostnamePoisoned(hostname: string): Promise<boolean | null> {
+  async isHostnamePoisoned(hostname: string): Promise<TestResult | null> {
     const result = this.cache.get(hostname)
     if (isntUndefined(result)) {
       return result
@@ -37,8 +42,11 @@ export class PoisonTester {
       , isSuccessPromise(resolveA(this.testResolver, hostname, this.timeout))
       ])
       if (alive) {
-        this.cache.set(hostname, poisoned)
-        return poisoned
+        const result = poisoned
+          ? TestResult.Poisoned
+          : TestResult.NotPoisoned
+        this.cache.set(hostname, result)
+        return result
       } else {
         throw new ServerUnreachable()
       }

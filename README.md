@@ -23,8 +23,8 @@ Options:
   --ip-whitelist [filename]       (default: "ip-whitelist.txt")
   --hostname-whitelist [filename] (default: "hostname-whitelist.txt")
   --hostname-blacklist [filename] (default: "hostname-blacklist.txt")
-  --route-cache [filename]        (default: "route.txt")
-  --test-cache [filename]         (default: "test.txt")
+  --route-cache [filename]        (default: "route.db")
+  --test-cache [filename]         (default: "test.db")
   --test-timeout [ms]             (default: "200")
   --log [level]                   (default: "info")
   -h, --help                      display help for command
