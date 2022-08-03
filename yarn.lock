@@ -328,6 +328,14 @@
     extra-timers "^0.2.5"
     justypes "^2.0.0"
 
+"@blackglory/go@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@blackglory/go/-/go-1.1.2.tgz#bb76676dc5938d2ef28daea82f198e7fee4bcc92"
+  integrity sha512-kkd9yrftU3ODT84hVOg9U91cyH53/Mw1cbG4EEJ7d7Nb3k4DRu15BeBgyYUi/AttII6c8o88fnTTou+8wrMYzQ==
+  dependencies:
+    extra-timers "^0.2.5"
+    justypes "^2.0.0"
+
 "@blackglory/log@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@blackglory/log/-/log-1.0.0.tgz#eec748cc8590348a33b3d5fe3f605d5da205d366"
@@ -4055,6 +4063,16 @@ iterable-operator@^1.0.0, iterable-operator@^1.0.1, iterable-operator@^1.1.0:
     "@blackglory/go" "^1.0.0"
     "@blackglory/types" "^1.1.0"
 
+iterable-operator@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/iterable-operator/-/iterable-operator-1.2.0.tgz#5d4d099b54769a36fa548c7fd33a6121dce3511a"
+  integrity sha512-rwdj2N+AZ00aXFKPuo0QEuRODBSseGN4ZOhs3IljCTK24JzzSbkZPA4k/9tSiu6RaehJtDZNRgncuiyEg+F4+w==
+  dependencies:
+    "@blackglory/errors" "^2.2.2"
+    "@blackglory/go" "^1.1.2"
+    "@blackglory/types" "^1.2.1"
+    justypes "^2.0.1"
+
 jest-changed-files@^27.5.1:
   version "27.5.1"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-27.5.1.tgz#a348aed00ec9bf671cc58a66fcbe7c3dfd6a68f5"
@@ -4590,6 +4608,11 @@ justypes@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/justypes/-/justypes-2.0.0.tgz#e1a09c8c99e08a54ac3a48bb97cb259d5082f907"
   integrity sha512-WzP+uveN67uQE9RsctKxqJrfBPv3aGyKnUasxaPCdXQM1voWtMObWHzpns4PjNoDFw0EvzLVoTShKn+ihpeRTA==
+
+justypes@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/justypes/-/justypes-2.0.1.tgz#f1468bc13dcf106e488cc8ab64a48c6db0e66ddc"
+  integrity sha512-hijVbniXf9DCtKaBIdJLqLn7uHjQ7KEFILiM9nfWwDdvej++eGMBqSCSAGXJvKjga00jfCmM5iyrhzBZybrTvQ==
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"

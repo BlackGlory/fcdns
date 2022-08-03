@@ -8,11 +8,13 @@ import { promises as fs } from 'fs'
 import { AsyncIterableOperator } from 'iterable-operator/lib/es2018/style/chaining/async-iterable-operator'
 import { IPv4AddressRange, IPv6AddressRange, compress } from 'address-range'
 import { go } from '@blackglory/go'
-import { writeIPListFile } from '../src/utils/ip-list-file'
-import { text } from 'extra-prompts'
+import { IPRanges } from '../src/ip-ranges'
 import { assert, isntEmptyArray } from '@blackglory/prelude'
+import { text } from 'extra-prompts'
 
 go(async () => {
+  const filename = await text('Filename:')
+
   const cc = (await text('CC (Use spaces to separate multiple)'))
     .split(/\s+/)
     .map(x => x.toUpperCase())
@@ -28,7 +30,7 @@ go(async () => {
     }
   })
 
-  await writeIPListFile('whitelist.txt', ranges)
+  new IPRanges(ranges).toFile(filename)
 })
 
 export async function parseAddressRangesFromStatisticsFile(
