@@ -13,9 +13,9 @@ import { assert, isntEmptyArray } from '@blackglory/prelude'
 import { text } from 'extra-prompts'
 
 go(async () => {
-  const filename = await text('Filename:')
+  const filename = await text('Filename')
 
-  const cc = (await text('CC (Use spaces to separate multiple)'))
+  const cc = (await text('CC (use spaces to separate multiple)'))
     .split(/\s+/)
     .map(x => x.toUpperCase())
   assert(isntEmptyArray(cc), 'At least one CC value is required')
