@@ -34,36 +34,34 @@ export function startServer({
 
     const startTime = Date.now()
     const question = req.question[0]
-    const [err1, result] = await getErrorResultAsync(() => router.route(question.name))
-    if (err1) {
-      logger.error(`${formatHostname(question.name)} ${err1}`, getElapsed(startTime))
-      logger.trace(`response: ${JSON.stringify(res)}`)
-      return res.send()
-    }
-    logger.debug(
-      `${formatHostname(question.name)} ${RouteResult[result!]}`
-    , getElapsed(startTime)
-    )
+    const [err, result] = await getErrorResultAsync(() => router.route(question.name))
+    if (err) {
+      logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
+    } else {
+      logger.debug(
+        `${formatHostname(question.name)} ${RouteResult[result!]}`
+      , getElapsed(startTime)
+      )
 
-    const server = result === RouteResult.TrustedServer ? trustedServer : untrustedServer
-    const [err2, response] = await getErrorResultAsync(() => resolve(
-      server
-    , question
-    , timeout
-    ))
-    if (err2) {
-      logger.error(`${formatHostname(question.name)} ${err2}`, getElapsed(startTime))
-      logger.trace(`response: ${JSON.stringify(res)}`)
-      return res.send()
-    }
-    logger.info(
-      `${formatHostname(question.name)} ${RecordType[question.type]}`
-    , getElapsed(startTime)
-    )
+      const server = result === RouteResult.TrustedServer ? trustedServer : untrustedServer
+      const [err, response] = await getErrorResultAsync(() => resolve(
+        server
+      , question
+      , timeout
+      ))
+      if (err) {
+        logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
+      } else {
+        logger.info(
+          `${formatHostname(question.name)} ${RecordType[question.type]}`
+        , getElapsed(startTime)
+        )
 
-    res.header.rcode = response.header.rcode
-    res.answer = response.answer
-    res.authority = response.authority
+        res.header.rcode = response.header.rcode
+        res.answer = response.answer
+        res.authority = response.authority
+      }
+    }
 
     logger.trace(`response: ${JSON.stringify(res)}`)
     res.send()
