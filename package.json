@@ -14,6 +14,7 @@
   "author": "BlackGlory <woshenmedoubuzhidao@blackglory.me>",
   "license": "MIT",
   "scripts": {
+    "prepare": "ts-patch install -s",
     "deduplicate": "yarn-deduplicate",
     "postinstall": "patch-package",
     "prepublishOnly": "run-s clean build bundle",
@@ -23,17 +24,18 @@
     "test:coverage": "jest --coverage --config jest.config.js",
     "clean": "rimraf lib dist",
     "build": "run-p build:*",
-    "build:src": "run-s build:src:*",
-    "build:src:compile": "tsc --project tsconfig.build.json",
-    "build:src:patch": "tscpaths --project tsconfig.build.json --src ./src --out ./lib",
+    "build:src": "tsc --project tsconfig.build.json",
     "build:scripts": "tsc --project tsconfig.scripts.json",
     "bundle": "webpack --stats-error-details",
     "smoke": "node dist/cli.cjs --help",
-    "release": "standard-version"
+    "release": "standard-version",
+    "script:generate-whitelist-by-cc": "ts-node scripts/generate-whitelist-by-cc.ts",
+    "script:import-poison-test-results-from-ndjson-map-file": "ts-node scripts/import-poison-test-results-from-ndjson-map-file.ts",
+    "script:import-route-results-from-ndjson-map-file": "ts-node scripts/import-route-results-from-ndjson-map-file.ts"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s clean lint build test bundle smoke",
+      "pre-commit": "run-s prepare clean lint build test bundle smoke",
       "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
     }
   },
@@ -55,8 +57,10 @@
     "rimraf": "^3.0.2",
     "standard-version": "^9.5.0",
     "ts-jest": "^27.1.4",
-    "tscpaths": "^0.0.9",
+    "ts-node": "^10.9.1",
+    "ts-patch": "^2.0.1",
     "typescript": "^4.7.4",
+    "typescript-transform-paths": "^3.3.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-shebang-plugin": "^1.1.8",

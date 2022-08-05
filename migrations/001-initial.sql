@@ -6,8 +6,8 @@
 PRAGMA journal_mode = WAL;
 
 CREATE TABLE hostname (
-  hostname      TEXT NOT NULL UNIQUE
-, route_result  INTEGER
+  hostname           TEXT    NOT NULL UNIQUE -- 更精确的类型为VARCHAR(255)
+, route_result       INTEGER
 , poison_test_result INTEGER
 ) STRICT;
 

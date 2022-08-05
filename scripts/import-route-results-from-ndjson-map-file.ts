@@ -7,7 +7,7 @@ import { youDied } from 'you-died'
 import { upsertRouteResult } from '@dao/upsert-route-result'
 
 go(async () => {
-  const cacheFilename = await text('cache filename')
+  const cacheFilename = await text('Cache filename')
   Database.openDatabase(cacheFilename)
   youDied(Database.closeDatabase)
   await Database.prepareDatabase()

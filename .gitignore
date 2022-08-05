@@ -67,3 +67,4 @@ hostname-whitelist.txt
 hostname-blacklist.txt
 test.txt
 route.txt
+cache.db

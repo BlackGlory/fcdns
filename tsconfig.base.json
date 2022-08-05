@@ -13,5 +13,15 @@
     , "@utils/*": ["src/utils/*"]
     , "@test/*": ["__tests__/*"]
     }
+  , "plugins" : [
+      {
+        "transform": "typescript-transform-paths"
+      , "exclude" : ["**/node_modules/**"]
+      }
+    , {
+        "transform": "typescript-transform-paths", "afterDeclarations": true
+      , "exclude" : ["**/node_modules/**"]
+      }
+    ]
   }
 }
