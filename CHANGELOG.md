@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/BlackGlory/fcdns/compare/v0.4.5...v0.5.0) (2022-08-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* Old route cache and test cache are discarded.
+
+### Features
+
+* **scripts:** add scripts ([2caea3b](https://github.com/BlackGlory/fcdns/commit/2caea3b4e3c945cc450371b378bc630f9f8185a1))
+* set process.title ([ea17e1b](https://github.com/BlackGlory/fcdns/commit/ea17e1bae4d70f85a0e7337fed577f34ae8298fe))
+
+
+### Bug Fixes
+
+* scripts ([b664c6b](https://github.com/BlackGlory/fcdns/commit/b664c6b0bd2dc2e66e694b7d07bc1f56a961f18d))
+* the syntax of option ([208c2c8](https://github.com/BlackGlory/fcdns/commit/208c2c8133859a2f2c18c74277a4de9e6e314a50))
+
+
+* replace NDJSON with extra-disk-cache ([01c33ac](https://github.com/BlackGlory/fcdns/commit/01c33accaec74851ad68431adf524137d7dac7ab))
+
 ### [0.4.5](https://github.com/BlackGlory/fcdns/compare/v0.4.4...v0.4.5) (2022-07-30)
 
 
