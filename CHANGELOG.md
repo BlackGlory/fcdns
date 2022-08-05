@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.3](https://github.com/BlackGlory/fcdns/compare/v0.5.2...v0.5.3) (2022-08-05)
+
+
+### Bug Fixes
+
+* bundle ([486968d](https://github.com/BlackGlory/fcdns/commit/486968d33297433fa5edc11d282d6a2a69e6f804))
+
 ### [0.5.2](https://github.com/BlackGlory/fcdns/compare/v0.5.1...v0.5.2) (2022-08-05)
 
 
