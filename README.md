@@ -14,20 +14,19 @@ Usage: fcdns [options]
 DNS relay server with fact-checking.
 
 Options:
-  -V, --version                output the version number
+  -V, --version                    output the version number
   --test-server <server>
   --untrusted-server <server>
   --trusted-server <server>
-  --port [port]                   (default: "53")
-  --timeout [seconds]             (default: "30")
-  --ip-whitelist [filename]       (default: "ip-whitelist.txt")
-  --hostname-whitelist [filename] (default: "hostname-whitelist.txt")
-  --hostname-blacklist [filename] (default: "hostname-blacklist.txt")
-  --route-cache [filename]        (default: "route.db")
-  --test-cache [filename]         (default: "test.db")
-  --test-timeout [ms]             (default: "200")
-  --log [level]                   (default: "info")
-  -h, --help                      display help for command
+  --port [port]                     (default: "53")
+  --timeout [seconds]               (default: "30")
+  --ip-whitelist [filename]         (default: "ip-whitelist.txt")
+  --hostname-whitelist [filename]   (default: "hostname-whitelist.txt")
+  --hostname-blacklist [filename]   (default: "hostname-blacklist.txt")
+  --cache [filename]                (default: "cache.db")
+  --test-timeout [ms]               (default: "200")
+  --log [level]                     (default: "info")
+  -h, --help                       display help for command
 ```
 
 Example:
