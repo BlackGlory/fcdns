@@ -19,5 +19,6 @@ export default {
   ]
 , externals: {
     'fsevents': 'commonjs fsevents'
+  , 'better-sqlite3': 'commonjs better-sqlite3'
   }
 }
