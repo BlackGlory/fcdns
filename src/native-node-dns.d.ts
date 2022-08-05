@@ -23,7 +23,7 @@ declare module 'native-node-dns' {
     opcode: number
     qr: number
     ra: number
-    rcode: number
+    rcode: NAME_TO_RCODE
     rd: number
     res1: number
     res2: number
@@ -33,7 +33,7 @@ declare module 'native-node-dns' {
 
   export interface IQuestion {
     name: string
-    type: number
+    type: NAME_TO_QTYPE
     class: number
   }
 

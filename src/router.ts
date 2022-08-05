@@ -2,9 +2,10 @@ import { promises as dns } from 'dns'
 import { PoisonTester } from './poison-tester'
 import { IPRanges } from './ip-ranges'
 import { Hostnames } from './hostnames'
-import { Cache } from './cache'
 import { resolveA } from '@utils/resolve-a'
-import { go, isntUndefined } from '@blackglory/prelude'
+import { isntNull } from '@blackglory/prelude'
+import { getRouteResult } from '@dao/get-route-result'
+import { upsertRouteResult } from '@dao/upsert-route-result'
 
 export enum RouteResult {
   UntrustedServer = 0
@@ -13,7 +14,6 @@ export enum RouteResult {
 }
 
 export class Router {
-  private cache: Cache<RouteResult>
   private poisonTester: PoisonTester
   private untrustedResolver: dns.Resolver
   private ipWhitelist: IPRanges
@@ -21,14 +21,12 @@ export class Router {
   private hostnameBlacklist: Hostnames
 
   constructor(options: {
-    cache: Cache<RouteResult>
     poisonTester: PoisonTester
     untrustedResolver: dns.Resolver
     ipWhitelist: IPRanges
     hostnameWhitelist: Hostnames
     hostnameBlacklist: Hostnames
   }) {
-    this.cache = options.cache
     this.poisonTester = options.poisonTester
     this.untrustedResolver = options.untrustedResolver
     this.ipWhitelist = options.ipWhitelist
@@ -37,36 +35,20 @@ export class Router {
   }
 
   async route(hostname: string): Promise<RouteResult> {
-    const result = this.routeByLocal(hostname)
-    switch (result) {
-      case RouteResult.UntrustedServer:
-      case RouteResult.TrustedServer:
-        return result
-      default: return await go(async () => {
-        const result = await this.routeByNetwork(hostname)
-        switch (result) {
-          case RouteResult.UntrustedServer:
-          case RouteResult.TrustedServer:
-            this.cache.set(hostname, result)
-          default: return result
-        }
-      })
-    }
-  }
-
-  private routeByLocal(hostname: string): RouteResult {
     if (this.inHostnameWhitelist(hostname)) return RouteResult.UntrustedServer
     if (this.inHostnameBlacklist(hostname)) return RouteResult.TrustedServer
 
-    const result = this.cache.get(hostname)
-    if (isntUndefined(result)) {
+    const result = getRouteResult(hostname)
+    if (isntNull(result)) {
       return result
     } else {
-      return RouteResult.Unresolved
+      const result = await this.resolveRoute(hostname)
+      upsertRouteResult(hostname, result)
+      return result
     }
   }
 
-  private async routeByNetwork(hostname: string): Promise<RouteResult> {
+  private async resolveRoute(hostname: string): Promise<RouteResult> {
     if (await this.poisonTester.isHostnamePoisoned(hostname)) {
       return RouteResult.TrustedServer
     } else {
@@ -78,7 +60,7 @@ export class Router {
           return RouteResult.TrustedServer
         }
       } else {
-        // 该主机名没有A记录.
+        // 该主机名未被污染, 但没有A记录, 因此无法决定路由结果, 交由使用结果者决定如何路由.
         return RouteResult.Unresolved
       }
     }

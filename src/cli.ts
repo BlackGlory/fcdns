@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 import { program } from 'commander'
 import { startServer } from './server'
-import { Router, RouteResult } from './router'
+import { Router } from './router'
 import { IPRanges } from './ip-ranges'
 import { Hostnames } from './hostnames'
-import { TestResult, PoisonTester } from './poison-tester'
-import { Cache } from './cache'
+import { PoisonTester } from './poison-tester'
 import { createDNSResolver } from '@utils/create-dns-resolver'
 import { assert } from '@blackglory/prelude'
 import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
 import { parseServerInfo } from '@utils/parse-server-info'
 import { youDied } from 'you-died'
+import * as Database from './database'
 
 const { name, version, description } = require('../package.json')
 process.title = name
@@ -27,23 +27,21 @@ program
   .option('--ip-whitelist [filename]', '', 'ip-whitelist.txt')
   .option('--hostname-whitelist [filename]', '', 'hostname-whitelist.txt')
   .option('--hostname-blacklist [filename]', '', 'hostname-blacklist.txt')
-  .option('--route-cache [filename]', '', 'route.db')
-  .option('--test-cache [filename]', '', 'test.db')
+  .option('--cache [filename]', '', 'cache.db')
   .option('--test-timeout [ms]', '', '200')
   .option('--log [level]', '', 'info')
   .action(async () => {
     const options = getOptions()
 
-    const testCache = await Cache.create<TestResult>(options.testCacheFilename)
-    youDied(() => testCache.close())
+    Database.openDatabase(options.cacheFilename)
+    await Database.prepareDatabase()
+    youDied(() => Database.closeDatabase())
+
     const poisonTester = new PoisonTester({
       server: options.testServer
     , timeout: options.testTimeout
-    , cache: testCache
     })
 
-    const routeCache = await Cache.create<RouteResult>(options.routeCacheFilename)
-    youDied(() => testCache.close())
     const untrustedResolver = createDNSResolver(options.untrustedServer)
     const ipWhitelist = await IPRanges.fromFile(options.ipWhitelistFilename)
     const hostnameWhitelist = await Hostnames.fromFile(options.hostnameWhitelistFilename)
@@ -54,7 +52,6 @@ program
     , ipWhitelist
     , hostnameWhitelist
     , hostnameBlacklist
-    , cache: routeCache
     })
     const logger = new Logger({
       level: options.logLevel
@@ -85,8 +82,7 @@ function getOptions() {
     ipWhitelist: string
     hostnameWhitelist: string
     hostnameBlacklist: string
-    routeCache: string
-    testCache: string
+    cache: string
     testTimeout: string
     log: string
   }>()
@@ -104,8 +100,7 @@ function getOptions() {
   const ipWhitelistFilename: string = opts.ipWhitelist
   const hostnameWhitelistFilename: string = opts.hostnameWhitelist
   const hostnameBlacklistFilename: string = opts.hostnameBlacklist
-  const routeCacheFilename: string = opts.routeCache
-  const testCacheFilename: string = opts.testCache
+  const cacheFilename: string = opts.cache
 
   assert(/^\d+$/.test(opts.testTimeout), 'The parameter test timeout must be integer')
   const testTimeout = Number.parseInt(opts.testTimeout, 10)
@@ -121,8 +116,7 @@ function getOptions() {
   , ipWhitelistFilename
   , hostnameWhitelistFilename
   , hostnameBlacklistFilename
-  , routeCacheFilename
-  , testCacheFilename
+  , cacheFilename
   , testTimeout
   , logLevel
   }

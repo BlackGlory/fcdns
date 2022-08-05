@@ -1,5 +1,10 @@
 declare module 'native-node-dns-packet' {
-  export enum NAME_TO_RCODE {
+  export const consts = {
+    NAME_TO_RCODE
+  , NAME_TO_QTYPE
+  }
+
+  enum NAME_TO_RCODE {
     NOERROR = 0
   , FORMERR = 1
   , SERVFAIL = 2
@@ -21,7 +26,7 @@ declare module 'native-node-dns-packet' {
   , BADTRUNC = 22
   }
 
-  export enum NAME_TO_QTYPE {
+  enum NAME_TO_QTYPE {
     A = 1
   , NS = 2
   , MD = 3

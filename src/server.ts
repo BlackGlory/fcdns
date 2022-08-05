@@ -5,6 +5,7 @@ import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import chalk from 'chalk'
 import { RecordType } from './record-types'
+import { go } from '@blackglory/prelude'
 
 interface IStartServerOptions {
   router: Router
@@ -32,8 +33,10 @@ export function startServer({
 
     res.header.rcode = dns.consts.NAME_TO_RCODE.SERVFAIL
 
-    const startTime = Date.now()
+    // https://stackoverflow.com/questions/55092830/how-to-perform-dns-lookup-with-multiple-questions
     const question = req.question[0]
+
+    const startTime = Date.now()
     const [err, result] = await getErrorResultAsync(() => router.route(question.name))
     if (err) {
       logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
@@ -43,7 +46,14 @@ export function startServer({
       , getElapsed(startTime)
       )
 
-      const server = result === RouteResult.TrustedServer ? trustedServer : untrustedServer
+      const server: IServerInfo = go(() => {
+        switch (result) {
+          case RouteResult.TrustedServer: return trustedServer
+          case RouteResult.UntrustedServer: return untrustedServer
+          case RouteResult.Unresolved: return untrustedServer
+          default: throw new Error('Unknown route result')
+        }
+      })
       const [err, response] = await getErrorResultAsync(() => resolve(
         server
       , question

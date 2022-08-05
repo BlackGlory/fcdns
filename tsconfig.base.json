@@ -9,6 +9,7 @@
   , "baseUrl": "."
   , "paths": {
       "@src/*": ["src/*"]
+    , "@dao/*": ["src/dao/*"]
     , "@utils/*": ["src/utils/*"]
     , "@test/*": ["__tests__/*"]
     }
