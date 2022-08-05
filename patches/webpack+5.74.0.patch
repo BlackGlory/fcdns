@@ -1,0 +1,13 @@
+diff --git a/node_modules/webpack/lib/NodeStuffPlugin.js b/node_modules/webpack/lib/NodeStuffPlugin.js
+index 99676eb..619c8ef 100644
+--- a/node_modules/webpack/lib/NodeStuffPlugin.js
++++ b/node_modules/webpack/lib/NodeStuffPlugin.js
+@@ -86,7 +86,7 @@ class NodeStuffPlugin {
+ 							.for(expressionName)
+ 							.tap("NodeStuffPlugin", expr => {
+ 								const dep = new CachedConstDependency(
+-									JSON.stringify(fn(parser.state.module)),
++									`require('path').join(module.path, ${JSON.stringify(fn(parser.state.module))})`,
+ 									expr.range,
+ 									expressionName
+ 								);

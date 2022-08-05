@@ -5,9 +5,9 @@ export default {
   target: 'node'
 , mode: 'none'
 , node: {
-    global: true,
-    __filename: true,
-    __dirname: true,
+    global: true
+  , __filename: true
+  , __dirname: true
   }
 , entry: './lib/cli.js'
 , output: {

@@ -3,8 +3,9 @@ DNS relay server with fact-checking.
 
 ## Install
 ```sh
-# Please do not use Yarn v1 to install this package globally, Yarn v1 cannot properly patch dependencies.
 npm install --global fcdns
+# or
+yarn global add fcdns
 ```
 
 ## Usage
