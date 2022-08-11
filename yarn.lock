@@ -290,10 +290,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blackglory/better-sqlite3-migrations@^0.1.13":
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/@blackglory/better-sqlite3-migrations/-/better-sqlite3-migrations-0.1.13.tgz#8434ff14f0e4ce54d375f623437a44530bc8d51c"
-  integrity sha512-r0gGYaEQXJKleFXnnxaBbxERJa9M5rb6T/ggjjlM+VYTLBVKIq4FGkmva6mHGZc2ik/oXsiJUt+SbwVUE5CQWQ==
+"@blackglory/better-sqlite3-migrations@^0.1.15":
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/@blackglory/better-sqlite3-migrations/-/better-sqlite3-migrations-0.1.15.tgz#5cb30ae8ad112cbdfdc98dd1c6ae6598953fe842"
+  integrity sha512-cIHSjuxpVOGBnXODKf16JunqX0/KGGGhj5Yr9EM4CxPUPIaQ4IaT9Hf02GIXlPE5pFtbeqVdGDnaHByP6tG4WQ==
   dependencies:
     "@blackglory/errors" "^2.2.2"
     "@blackglory/types" "^1.2.1"
