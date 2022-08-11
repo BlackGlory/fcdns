@@ -1,7 +1,8 @@
 import { getDatabase } from '@src/database'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function clear(): void {
-  getDatabase().prepare(`
+export const clear = withLazyStatic(function (): void {
+  lazyStatic(() => getDatabase().prepare(`
     DELETE FROM hostname
-  `).run()
-}
+  `), [getDatabase()]).run()
+})

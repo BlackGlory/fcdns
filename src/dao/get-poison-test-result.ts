@@ -1,13 +1,14 @@
 import { getDatabase } from '@src/database'
 import { PoisonTestResult } from '@src/poison-tester'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function getPoisonResult(hostname: string): PoisonTestResult | null {
-  const row: { poison_test_result: number | null } | undefined = getDatabase()
+export const getPoisonResult = withLazyStatic(function (hostname: string): PoisonTestResult | null {
+  const row: { poison_test_result: number | null } | undefined = lazyStatic(() => getDatabase()
     .prepare(`
       SELECT poison_test_result
         FROM hostname
        WHERE hostname = $hostname
-    `)
+    `), [getDatabase()])
     .get({ hostname })
 
   switch (row?.poison_test_result) {
@@ -15,4 +16,4 @@ export function getPoisonResult(hostname: string): PoisonTestResult | null {
     case PoisonTestResult.NotPoisoned: return PoisonTestResult.NotPoisoned
     default: return null
   }
-}
+})

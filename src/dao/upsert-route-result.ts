@@ -1,11 +1,12 @@
 import { getDatabase } from '@src/database'
 import { RouteResult } from '@src/router'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function upsertRouteResult(
+export const upsertRouteResult = withLazyStatic(function (
   hostname: string
 , routeResult: RouteResult
 ): void {
-  getDatabase().prepare(`
+  lazyStatic(() => getDatabase().prepare(`
     INSERT INTO hostname (
                   hostname
                 , route_result
@@ -13,5 +14,5 @@ export function upsertRouteResult(
           VALUES ($hostname, $routeResult)
               ON CONFLICT(hostname)
               DO UPDATE SET route_result = $routeResult
-  `).run({ hostname, routeResult })
-}
+  `), [getDatabase()]).run({ hostname, routeResult })
+})
