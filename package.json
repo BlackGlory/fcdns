@@ -17,7 +17,7 @@
     "prepare": "ts-patch install -s",
     "deduplicate": "yarn-deduplicate",
     "postinstall": "patch-package",
-    "prepublishOnly": "run-s clean build bundle",
+    "prepublishOnly": "run-s postinstall prepare clean build bundle",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src",
     "test": "jest --config jest.config.js",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
@@ -35,7 +35,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s prepare clean lint build test bundle smoke",
+      "pre-commit": "run-s postinstall prepare clean lint build test bundle smoke",
       "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
     }
   },
