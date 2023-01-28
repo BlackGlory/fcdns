@@ -19,14 +19,14 @@ Options:
   --test-server <server>
   --untrusted-server <server>
   --trusted-server <server>
-  --port [port]                     (default: "53")
-  --timeout [seconds]               (default: "30")
-  --ip-whitelist [filename]         (default: "ip-whitelist.txt")
-  --hostname-whitelist [filename]   (default: "hostname-whitelist.txt")
-  --hostname-blacklist [filename]   (default: "hostname-blacklist.txt")
-  --cache [filename]                (default: "cache.db")
-  --test-timeout [ms]               (default: "200")
-  --log [level]                     (default: "info")
+  --port <port>                     (default: "53")
+  --timeout <seconds>               (default: "30")
+  --ip-whitelist <filename>         (default: "ip-whitelist.txt")
+  --hostname-whitelist <filename>   (default: "hostname-whitelist.txt")
+  --hostname-blacklist <filename>   (default: "hostname-blacklist.txt")
+  --cache <filename>                (default: "cache.db")
+  --test-timeout <milliseconds>     (default: "200")
+  --log <level>                     (default: "info")
   -h, --help                       display help for command
 ```
 
