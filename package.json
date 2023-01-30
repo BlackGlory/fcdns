@@ -80,7 +80,7 @@
     "extra-logger": "^0.6.9",
     "extra-promise": "^2.4.1",
     "iterable-operator": "^1.2.0",
-    "migrations-file": "^0.2.4",
+    "migration-files": "^0.4.0",
     "native-node-dns": "0.7.6",
     "native-node-dns-packet": "0.1.5",
     "patch-package": "^6.4.7",

@@ -3,9 +3,10 @@ import type { Database as IDatabase } from 'better-sqlite3'
 import path from 'path'
 import { ensureDirSync, findUpPackageFilename } from 'extra-filesystem'
 import { assert } from '@blackglory/errors'
-import { readMigrations } from 'migrations-file'
+import { findMigrationFilenames, readMigrationFile } from 'migration-files'
 import { migrate } from '@blackglory/better-sqlite3-migrations'
 import { isntUndefined } from '@blackglory/prelude'
+import { map } from 'extra-promise'
 
 let db: IDatabase
 
@@ -42,6 +43,9 @@ export function closeDatabase(): void {
 async function migrateDatabase(db: IDatabase): Promise<void> {
   const pkgRoot = path.join((await findUpPackageFilename(__dirname))!, '..')
   const migrationsPath = path.join(pkgRoot, 'migrations')
-  const migrations = await readMigrations(migrationsPath)
+  const migrations = await map(
+    await findMigrationFilenames(migrationsPath)
+  , readMigrationFile
+  )
   migrate(db, migrations)
 }
