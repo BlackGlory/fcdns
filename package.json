@@ -32,7 +32,7 @@
     "build:scripts": "tsc --project tsconfig.scripts.json",
     "smoke": "node lib/cli.js --help",
     "release": "standard-version",
-    "script:generate-whitelist-by-cc": "ts-node --esm scripts/generate-whitelist-by-cc.ts"
+    "script:generate-ip-whitelist-by-cc": "ts-node --esm scripts/generate-ip-whitelist-by-cc.ts"
   },
   "husky": {
     "hooks": {
