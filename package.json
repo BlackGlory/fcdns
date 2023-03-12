@@ -32,9 +32,7 @@
     "build:scripts": "tsc --project tsconfig.scripts.json",
     "smoke": "node lib/cli.js --help",
     "release": "standard-version",
-    "script:generate-whitelist-by-cc": "ts-node scripts/generate-whitelist-by-cc.ts",
-    "script:import-poison-test-results-from-ndjson-map-file": "ts-node scripts/import-poison-test-results-from-ndjson-map-file.ts",
-    "script:import-route-results-from-ndjson-map-file": "ts-node scripts/import-route-results-from-ndjson-map-file.ts"
+    "script:generate-whitelist-by-cc": "ts-node --esm scripts/generate-whitelist-by-cc.ts"
   },
   "husky": {
     "hooks": {
