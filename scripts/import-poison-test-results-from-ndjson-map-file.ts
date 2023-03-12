@@ -1,10 +1,10 @@
 import { go, isBoolean } from '@blackglory/prelude'
 import { text } from 'extra-prompts'
-import { readNDJSONMapFile } from './utils/read-ndjson-map-file'
-import { PoisonTestResult } from '@src/poison-tester'
-import * as Database from '@src/database'
+import { readNDJSONMapFile } from './utils/read-ndjson-map-file.js'
+import { PoisonTestResult } from '@src/poison-tester.js'
+import * as Database from '@src/database.js'
 import { youDied } from 'you-died'
-import { upsertPoisonTestResult } from '@dao/upsert-poison-test-result'
+import { upsertPoisonTestResult } from '@dao/upsert-poison-test-result.js'
 
 go(async () => {
   const cacheFilename = await text('Cache filename')

@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 import { program } from 'commander'
-import { startServer } from './server'
-import { Router } from './router'
-import { IPRanges } from './ip-ranges'
-import { Hostnames } from './hostnames'
-import { PoisonTester } from './poison-tester'
-import { createDNSResolver } from '@utils/create-dns-resolver'
+import { startServer } from './server.js'
+import { Router } from './router.js'
+import { IPRanges } from './ip-ranges.js'
+import { Hostnames } from './hostnames.js'
+import { PoisonTester } from './poison-tester.js'
+import { createDNSResolver } from '@utils/create-dns-resolver.js'
 import { assert } from '@blackglory/prelude'
 import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
-import { IServerInfo, parseServerInfo } from '@utils/parse-server-info'
+import { IServerInfo, parseServerInfo } from '@utils/parse-server-info.js'
 import { youDied } from 'you-died'
-import * as Database from './database'
+import * as Database from './database.js'
+import { name, version, description } from '@utils/package.js'
 
 interface IOptions {
   testServer: string
@@ -26,7 +27,6 @@ interface IOptions {
   log: string
 }
 
-const { name, version, description } = require('../package.json')
 process.title = name
 
 program

@@ -1,4 +1,4 @@
-import { HostnamePattern } from '@utils/hostname-pattern'
+import { HostnamePattern } from '@utils/hostname-pattern.js'
 
 describe('HostnamePattern', () => {
   test('wildcard match', () => {

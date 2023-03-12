@@ -1,12 +1,12 @@
-import { isServerOnline } from '@utils/is-server-online'
-import { createDNSResolver } from '@utils/create-dns-resolver'
-import { resolveA } from '@utils/resolve-a'
+import { isServerOnline } from '@utils/is-server-online.js'
+import { createDNSResolver } from '@utils/create-dns-resolver.js'
+import { resolveA } from '@utils/resolve-a.js'
 import { CustomError } from '@blackglory/errors'
 import { isSuccessPromise } from 'return-style'
 import { isntNull } from '@blackglory/prelude'
 import { promises as dns } from 'dns'
-import { getPoisonResult } from '@dao/get-poison-test-result'
-import { upsertPoisonTestResult } from '@dao/upsert-poison-test-result'
+import { getPoisonResult } from '@dao/get-poison-test-result.js'
+import { upsertPoisonTestResult } from '@dao/upsert-poison-test-result.js'
 
 export enum PoisonTestResult {
   NotPoisoned = 0

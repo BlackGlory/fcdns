@@ -1,6 +1,6 @@
 import { IPv4AddressRange, IPv6AddressRange } from 'address-range'
-import { isIPv4Address } from '@utils/is-ipv4-address'
-import { isIPv6Address } from '@utils/is-ipv6-address'
+import { isIPv4Address } from '@utils/is-ipv4-address.js'
+import { isIPv6Address } from '@utils/is-ipv6-address.js'
 import { promises as fs } from 'fs'
 import { groupBy } from 'iterable-operator'
 

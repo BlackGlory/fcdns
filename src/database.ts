@@ -7,6 +7,9 @@ import { findMigrationFilenames, readMigrationFile } from 'migration-files'
 import { migrate } from '@blackglory/better-sqlite3-migrations'
 import { isntUndefined } from '@blackglory/prelude'
 import { map } from 'extra-promise'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 let db: IDatabase
 

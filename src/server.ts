@@ -1,10 +1,10 @@
-import { Router, RouteResult } from './router'
+import { Router, RouteResult } from './router.js'
 import * as dns from 'native-node-dns'
-import { IServerInfo } from '@utils/parse-server-info'
+import { IServerInfo } from '@utils/parse-server-info.js'
 import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import chalk from 'chalk'
-import { RecordType } from './record-types'
+import { RecordType } from './record-types.js'
 import { go } from '@blackglory/prelude'
 
 interface IStartServerOptions {

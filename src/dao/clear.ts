@@ -1,4 +1,4 @@
-import { getDatabase } from '@src/database'
+import { getDatabase } from '@src/database.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 export const clear = withLazyStatic(function (): void {

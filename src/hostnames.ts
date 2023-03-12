@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs'
-import { HostnamePattern } from '@utils/hostname-pattern'
+import { HostnamePattern } from '@utils/hostname-pattern.js'
 import { ensureFile } from 'extra-filesystem'
 
 export class Hostnames {

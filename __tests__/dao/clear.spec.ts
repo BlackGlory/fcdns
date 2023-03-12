@@ -1,5 +1,5 @@
-import { clear } from '@dao/clear'
-import { initializeDatabase, clearDatabase, setRawHostname, hasRawHostname } from './utils'
+import { clear } from '@dao/clear.js'
+import { initializeDatabase, clearDatabase, setRawHostname, hasRawHostname } from './utils.js'
 
 beforeEach(initializeDatabase)
 afterEach(clearDatabase)

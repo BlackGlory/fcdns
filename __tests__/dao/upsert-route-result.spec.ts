@@ -1,7 +1,7 @@
-import { upsertRouteResult } from '@dao/upsert-route-result'
-import { initializeDatabase, clearDatabase, getRawHostname, setRawHostname } from './utils'
-import { RouteResult } from '@src/router'
-import { PoisonTestResult } from '@src/poison-tester'
+import { upsertRouteResult } from '@dao/upsert-route-result.js'
+import { initializeDatabase, clearDatabase, getRawHostname, setRawHostname } from './utils.js'
+import { RouteResult } from '@src/router.js'
+import { PoisonTestResult } from '@src/poison-tester.js'
 
 beforeEach(initializeDatabase)
 afterEach(clearDatabase)

@@ -1,5 +1,5 @@
-import { getDatabase } from '@src/database'
-import { PoisonTestResult } from '@src/poison-tester'
+import { getDatabase } from '@src/database.js'
+import { PoisonTestResult } from '@src/poison-tester.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 export const upsertPoisonTestResult = withLazyStatic(function (

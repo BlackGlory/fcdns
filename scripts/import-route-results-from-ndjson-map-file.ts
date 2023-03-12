@@ -1,10 +1,10 @@
 import { go } from '@blackglory/prelude'
 import { text } from 'extra-prompts'
-import { readNDJSONMapFile } from './utils/read-ndjson-map-file'
-import { RouteResult } from '@src/router'
-import * as Database from '@src/database'
+import { readNDJSONMapFile } from './utils/read-ndjson-map-file.js'
+import { RouteResult } from '@src/router.js'
+import * as Database from '@src/database.js'
 import { youDied } from 'you-died'
-import { upsertRouteResult } from '@dao/upsert-route-result'
+import { upsertRouteResult } from '@dao/upsert-route-result.js'
 
 go(async () => {
   const cacheFilename = await text('Cache filename')

@@ -1,11 +1,11 @@
 import { promises as dns } from 'dns'
-import { PoisonTester } from './poison-tester'
-import { IPRanges } from './ip-ranges'
-import { Hostnames } from './hostnames'
-import { resolveA } from '@utils/resolve-a'
+import { PoisonTester } from './poison-tester.js'
+import { IPRanges } from './ip-ranges.js'
+import { Hostnames } from './hostnames.js'
+import { resolveA } from '@utils/resolve-a.js'
 import { isntNull } from '@blackglory/prelude'
-import { getRouteResult } from '@dao/get-route-result'
-import { upsertRouteResult } from '@dao/upsert-route-result'
+import { getRouteResult } from '@dao/get-route-result.js'
+import { upsertRouteResult } from '@dao/upsert-route-result.js'
 
 export enum RouteResult {
   UntrustedServer = 0

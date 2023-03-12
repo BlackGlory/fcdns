@@ -3,7 +3,7 @@ import {
 , prepareDatabase
 , getDatabase
 , closeDatabase
-} from '@src/database'
+} from '@src/database.js'
 
 export async function initializeDatabase(): Promise<void> {
   openDatabase(':memory:')

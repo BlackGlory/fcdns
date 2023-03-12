@@ -1,14 +1,15 @@
 import {
   downloadLatestStatisticsFile
 , parseStatisticsFile
-, isRecord, IRecord, Domain, Registry
+, isRecord, IRecord, ISummary, IVersion, Domain, Registry
 } from 'internet-number'
 import { createTempFile } from 'extra-filesystem'
 import { promises as fs } from 'fs'
-import { AsyncIterableOperator } from 'iterable-operator/lib/es2018/style/chaining/async-iterable-operator'
+import { pipe } from 'extra-utils'
+import { filterAsync, toArrayAsync } from 'iterable-operator'
 import { IPv4AddressRange, IPv6AddressRange, compress } from 'address-range'
 import { go } from '@blackglory/go'
-import { IPRanges } from '../src/ip-ranges'
+import { IPRanges } from '../src/ip-ranges.js'
 import { assert, isntEmptyArray } from '@blackglory/prelude'
 import { text } from 'extra-prompts'
 
@@ -37,10 +38,12 @@ export async function parseAddressRangesFromStatisticsFile(
   filename: string
 , cc: string[]
 ): Promise<Array<IPv4AddressRange | IPv6AddressRange>> {
-  const records = await new AsyncIterableOperator(parseStatisticsFile(filename))
-    .filterAsync<IRecord>(isRecord)
-    .filterAsync(record => cc.includes(record.cc))
-    .toArrayAsync()
+  const records = await pipe(
+    parseStatisticsFile(filename)
+  , iter => filterAsync<IVersion | ISummary | IRecord, IRecord>(iter, isRecord)
+  , iter => filterAsync(iter, record => cc.includes(record.cc))
+  , toArrayAsync
+  )
 
   return convertRecordsToRanges(records)
 }

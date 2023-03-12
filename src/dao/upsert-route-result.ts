@@ -1,5 +1,5 @@
-import { getDatabase } from '@src/database'
-import { RouteResult } from '@src/router'
+import { getDatabase } from '@src/database.js'
+import { RouteResult } from '@src/router.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 export const upsertRouteResult = withLazyStatic(function (
