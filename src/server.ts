@@ -42,7 +42,7 @@ export function startServer({
       logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
     } else {
       logger.debug(
-        `${formatHostname(question.name)} ${RouteResult[result!]}`
+        `${formatHostname(question.name)} ${RouteResult[result]}`
       , getElapsed(startTime)
       )
 
@@ -63,7 +63,7 @@ export function startServer({
         logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
       } else {
         logger.info(
-          `${formatHostname(question.name)} ${RecordType[question.type]}`
+          `${formatHostname(question.name)} ${formatRecordType(question.type)}`
         , getElapsed(startTime)
         )
 
@@ -123,4 +123,8 @@ function formatHostname(hostname: string): string {
 
 function getElapsed(startTime: number): number {
   return Date.now() - startTime
+}
+
+function formatRecordType(recordType: number): string {
+  return RecordType[recordType] ?? `Unknown(${recordType})`
 }
