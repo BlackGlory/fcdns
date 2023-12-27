@@ -36,17 +36,17 @@ export function getRawHostname(hostname: string): IRawHostname {
     SELECT *
       FROM hostname
      WHERE hostname = $hostname
-  `).get({ hostname })
+  `).get({ hostname }) as IRawHostname
 }
 
 export function hasRawHostname(hostname: string): boolean {
-  const result: { hostname_exists: 1 | 0 } = getDatabase().prepare(`
+  const row = getDatabase().prepare(`
     SELECT EXISTS(
              SELECT *
                FROM hostname
               WHERE hostname = $hostname
            ) AS hostname_exists
-  `).get({ hostname })
+  `).get({ hostname }) as { hostname_exists: 1 | 0 } 
 
-  return result.hostname_exists === 1
+  return row.hostname_exists === 1
 }
