@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/BlackGlory/fcdns/compare/v0.6.0...v0.7.0) (2023-12-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js v16 => Node.js v18.17.0
+
+* upgrade dependencies ([91cb2a7](https://github.com/BlackGlory/fcdns/commit/91cb2a72d955edd93df0891cc31578354f899b0a))
+
 ## [0.6.0](https://github.com/BlackGlory/fcdns/compare/v0.5.10...v0.6.0) (2023-03-12)
 
 
