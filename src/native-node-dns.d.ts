@@ -1,13 +1,13 @@
 declare module 'native-node-dns' {
   import { EventEmitter } from 'events'
-  import { NAME_TO_RCODE, NAME_TO_QTYPE } from 'native-node-dns-packet'
+  import { NAME_TO_RCODE, NAME_TO_QTYPE, Packet, IHeader, IPacket, IQuestion, IResourceRecord } from 'native-node-dns-packet'
 
   export const consts = {
     NAME_TO_RCODE
   , NAME_TO_QTYPE
   }
 
-  export interface IPacket {
+  export interface IPacket extends Packet {
     header: IHeader
     question: IQuestion[]
     answer: IResourceRecord[]
@@ -15,33 +15,6 @@ declare module 'native-node-dns' {
     additional: IResourceRecord[]
 
     send(): void
-  }
-
-  export interface IHeader {
-    aa: number
-    id: number
-    opcode: number
-    qr: number
-    ra: number
-    rcode: NAME_TO_RCODE
-    rd: number
-    res1: number
-    res2: number
-    res3: number
-    tc: number
-  }
-
-  export interface IQuestion {
-    name: string
-    type: NAME_TO_QTYPE
-    class: number
-  }
-
-  export interface IResourceRecord {
-    name: string
-    type: number
-    class: number
-    ttl: number
   }
 
   interface IRequest extends EventEmitter {

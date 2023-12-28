@@ -6,6 +6,7 @@ import { Logger } from 'extra-logger'
 import chalk from 'chalk'
 import { RecordType } from './record-types.js'
 import { go } from '@blackglory/prelude'
+import { IQuestion } from 'native-node-dns-packet'
 
 interface IStartServerOptions {
   router: Router
@@ -82,7 +83,7 @@ export function startServer({
 
 function resolve(
   server: IServerInfo
-, question: dns.IQuestion
+, question: IQuestion
 , timeout: number
 ): Promise<dns.IPacket> {
   return new Promise((resolve, reject) => {

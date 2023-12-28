@@ -1,4 +1,47 @@
 declare module 'native-node-dns-packet' {
+  import BufferCursor from 'buffercursor'
+
+  export class Packet {
+    header: IHeader
+    question: IQuestion[]
+    answer: IResourceRecord[]
+    authority: IResourceRecord[]
+    additional: IResourceRecord[]
+
+    write(buffer: Buffer, packet: Packet): unknown
+    parse(buffer: Buffer): Packet
+  }
+
+  export interface IHeader {
+    aa: number
+    id: number
+    opcode: number
+    qr: number
+    ra: number
+    rcode: NAME_TO_RCODE
+    rd: number
+    res1: number
+    res2: number
+    res3: number
+    tc: number
+  }
+
+  export interface IQuestion {
+    name: string
+    type: NAME_TO_QTYPE
+    class: number
+  }
+
+  export interface IResourceRecord {
+    name: string
+    type: number
+    class: number
+    ttl: number
+
+    address?: string
+    data?: string | BufferCursor
+  }
+
   export const consts = {
     NAME_TO_RCODE
   , NAME_TO_QTYPE
