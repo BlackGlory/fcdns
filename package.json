@@ -9,7 +9,8 @@
   "bin": "lib/cli.js",
   "files": [
     "migrations",
-    "lib"
+    "lib",
+    "patches"
   ],
   "engines": {
     "node": ">=18.17.0"
