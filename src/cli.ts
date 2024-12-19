@@ -86,7 +86,7 @@ program
     , transport: new TerminalTransport({})
     })
 
-    startServer({
+    await startServer({
       router
     , logger
     , trustedServer

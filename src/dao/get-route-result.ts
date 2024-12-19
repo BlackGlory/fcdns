@@ -4,12 +4,15 @@ import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 export const getRouteResult = withLazyStatic((hostname: string): RouteResult | null => {
   const row = lazyStatic(() => getDatabase()
-    .prepare(`
+    .prepare<
+      { hostname: string }
+    , { route_result: number | null }
+    >(`
       SELECT route_result
         FROM hostname
        WHERE hostname = $hostname
     `), [getDatabase()])
-    .get({ hostname }) as { route_result: number | null } | undefined 
+    .get({ hostname })
 
   switch (row?.route_result) {
     case RouteResult.Unresolved: return RouteResult.Unresolved

@@ -6,13 +6,20 @@ export const upsertPoisonTestResult = withLazyStatic(function (
   hostname: string
 , result: PoisonTestResult
 ): void {
-  lazyStatic(() => getDatabase().prepare(`
-    INSERT INTO hostname (
-                  hostname
-                , poison_test_result
-                )
-          VALUES ($hostname, $result)
-              ON CONFLICT(hostname)
-              DO UPDATE SET poison_test_result = $result
-  `), [getDatabase()]).run({ hostname, result })
+  lazyStatic(() => getDatabase()
+    .prepare<
+    { 
+      hostname: string
+      result: PoisonTestResult
+    }
+    >(`
+      INSERT INTO hostname (
+                    hostname
+                  , poison_test_result
+                  )
+            VALUES ($hostname, $result)
+                ON CONFLICT(hostname)
+                DO UPDATE SET poison_test_result = $result
+    `), [getDatabase()])
+    .run({ hostname, result })
 })

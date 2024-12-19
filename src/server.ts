@@ -1,12 +1,10 @@
 import { Router, RouteResult } from './router.js'
-import * as dns from 'native-node-dns'
 import { IServerInfo } from '@utils/parse-server-info.js'
-import { getErrorResultAsync } from 'return-style'
 import { Logger } from 'extra-logger'
 import chalk from 'chalk'
-import { RecordType } from './record-types.js'
 import { go } from '@blackglory/prelude'
-import { IQuestion } from 'native-node-dns-packet'
+import { DNSClient, DNSServer, IPacket, IQuestion, QR, RCODE, TYPE } from 'extra-dns'
+import { timeoutSignal } from 'extra-abort'
 
 interface IStartServerOptions {
   router: Router
@@ -17,115 +15,96 @@ interface IStartServerOptions {
   timeout: number
 }
 
-export function startServer({
-  logger
-, port
-, timeout
-, router
-, trustedServer
-, untrustedServer
-}: IStartServerOptions): void {
-  const server = dns.createServer()
+export async function startServer(
+  {
+    logger
+  , port
+  , timeout
+  , router
+  , trustedServer
+  , untrustedServer
+  }: IStartServerOptions
+): Promise<() => Promise<void>> {
+  const trustedClient = new DNSClient(trustedServer.host, trustedServer.port ?? 53)
+  const untrustedClient = new DNSClient(untrustedServer.host, untrustedServer.port ?? 53)
+  const server = new DNSServer('0.0.0.0', port)
 
-  server.on('error', console.error)
-  server.on('socketError', console.error)
-  server.on('request', async (req, res) => {
-    logger.trace(`request: ${JSON.stringify(req)}`)
+  server.on('query', async (query, respond) => {
+    logger.trace(`request: ${JSON.stringify(query)}`)
 
-    res.header.rcode = dns.consts.NAME_TO_RCODE.SERVFAIL
+    // 默认失败响应.
+    let response: IPacket = {
+      header: {
+        ID: query.header.ID
+      , flags: {
+          QR: QR.Response
+        , OPCODE: query.header.flags.OPCODE
+        , AA: 0
+        , TC: 0
+        , RD: 0
+        , RA: 0
+        , Z: 0
+        , RCODE: RCODE.ServFail
+        }
+      }
+    , questions: query.questions
+    , answers: []
+    , authorityRecords: []
+    , additionalRecords: []
+    }
 
     // https://stackoverflow.com/questions/55092830/how-to-perform-dns-lookup-with-multiple-questions
-    const question = req.question[0]
+    const question = query.questions[0] as IQuestion | undefined
+    if (question) {
+      const startTime = Date.now()
 
-    const startTime = Date.now()
-    const [err, result] = await getErrorResultAsync(() => router.route(question.name))
-    if (err) {
-      logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
-    } else {
-      logger.debug(
-        `${formatHostname(question.name)} ${RouteResult[result]}`
-      , getElapsed(startTime)
-      )
+      try {
+        const result = await router.route(question.QNAME)
 
-      const server: IServerInfo = go(() => {
-        switch (result) {
-          case RouteResult.TrustedServer: return trustedServer
-          case RouteResult.UntrustedServer: return untrustedServer
-          case RouteResult.Unresolved: return untrustedServer
-          default: throw new Error('Unknown route result')
-        }
-      })
-      const [err, response] = await getErrorResultAsync(() => resolve(
-        server
-      , question
-      , timeout
-      ))
-      if (err) {
-        logger.error(`${formatHostname(question.name)} ${err}`, getElapsed(startTime))
-      } else {
-        logger.info(
-          `${formatHostname(question.name)} ${formatRecordType(question.type)}`
+        logger.debug(
+          `${formatHostname(question.QNAME)} ${RouteResult[result]}`
         , getElapsed(startTime)
         )
 
-        res.header.rcode = response.header.rcode
-        res.answer = response.answer
-        res.authority = response.authority
+        const client: DNSClient = go(() => {
+          switch (result) {
+            case RouteResult.TrustedServer: return trustedClient
+            case RouteResult.UntrustedServer: return untrustedClient
+            case RouteResult.Unresolved: return untrustedClient
+            default: throw new Error('Unknown route result')
+          }
+        })
+
+        try {
+          response = await client.resolve(query, timeoutSignal(timeout))
+
+          logger.info(
+            `${formatHostname(question.QNAME)} ${formatRecordType(question.QTYPE)}`
+          , getElapsed(startTime)
+          )
+        } catch (err) {
+          logger.error(`${formatHostname(question.QNAME)} ${err}`, getElapsed(startTime))
+        }
+      } catch (err) {
+        logger.error(`${formatHostname(question.QNAME)} ${err}`, getElapsed(startTime))
       }
     }
 
-    logger.trace(`response: ${JSON.stringify(res)}`)
-    res.send()
+    logger.trace(`response: ${JSON.stringify(response)}`)
+    await respond(response)
   })
 
-  server.serve(port)
-}
-
-function resolve(
-  server: IServerInfo
-, question: IQuestion
-, timeout: number
-): Promise<dns.IPacket> {
-  return new Promise((resolve, reject) => {
-    let response: dns.IPacket
-    const request = dns.Request({
-      question
-    , server: {
-        address: server.host
-      , port: server.port
-      , type: 'udp'
-      }
-    , timeout
-    , cache: false
-    , try_edns: true
-    })
-
-    request.on('timeout', () => reject(new Error('timeout')))
-    request.on('cancelled', () => reject(new Error('cancelled')))
-    request.on('end', () => {
-      if (response) {
-        resolve(response)
-      } else {
-        reject(new Error('No response'))
-      }
-    })
-    request.on('message', (err, msg) => {
-      if (err) return reject(err)
-      response = msg
-    })
-
-    request.send()
-  })
+  return await server.listen()
 }
 
 function formatHostname(hostname: string): string {
   return chalk.cyan(hostname)
 }
 
-function getElapsed(startTime: number): number {
-  return Date.now() - startTime
+function formatRecordType(recordType: number): string {
+  return TYPE[recordType] ?? `Unknown(${recordType})`
 }
 
-function formatRecordType(recordType: number): string {
-  return RecordType[recordType] ?? `Unknown(${recordType})`
+function getElapsed(startTime: number): number {
+  return Date.now() - startTime
 }

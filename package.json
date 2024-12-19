@@ -9,8 +9,7 @@
   "bin": "lib/cli.js",
   "files": [
     "migrations",
-    "lib",
-    "patches"
+    "lib"
   ],
   "engines": {
     "node": ">=18.17.0"
@@ -21,8 +20,7 @@
   "scripts": {
     "prepare": "ts-patch install -s",
     "deduplicate": "yarn-deduplicate",
-    "postinstall": "patch-package",
-    "prepublishOnly": "run-s postinstall prepare clean build",
+    "prepublishOnly": "run-s prepare clean build",
     "lint": "eslint --quiet src __tests__",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand --config jest.config.cjs",
     "clean": "rimraf lib",
@@ -35,7 +33,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s postinstall prepare clean lint build test smoke",
+      "pre-commit": "run-s prepare clean lint build test smoke",
       "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
     }
   },
@@ -75,6 +73,8 @@
     "better-sqlite3": "^11.7.0",
     "chalk": "^5.3.0",
     "commander": "^12.1.0",
+    "extra-abort": "^0.4.0",
+    "extra-dns": "^0.1.2",
     "extra-filesystem": "^0.5.1",
     "extra-lazy": "^2.0.2",
     "extra-logger": "^0.7.2",
@@ -82,9 +82,6 @@
     "extra-utils": "^5.17.0",
     "iterable-operator": "^5.1.0",
     "migration-files": "^0.4.3",
-    "native-node-dns": "0.7.6",
-    "native-node-dns-packet": "0.1.5",
-    "patch-package": "^8.0.0",
     "ping": "^0.4.4",
     "return-style": "^3.0.1",
     "you-died": "^0.4.5"
