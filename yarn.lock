@@ -2715,10 +2715,10 @@ extra-defer@^0.3.1:
     extra-generator "^0.5.9"
     extra-promise "^6.2.0"
 
-extra-dns@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/extra-dns/-/extra-dns-0.1.2.tgz#ff8766f0d19311da64bc2aff84269b6b59ac5615"
-  integrity sha512-d9PKY+Q83irVmiCOye3TITeQCl+A1GM303cEXI6CiaxDuwOk94iKbqhvoFZNcV+dtmoJWCPfZ+yHQF82Ojm8OA==
+extra-dns@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/extra-dns/-/extra-dns-0.1.6.tgz#e9c0442d27aac3ed40a03d9113a93df9f219a95a"
+  integrity sha512-6oA4tQmAb/liOqVH28j+p9TjXZ9YxqRbBk/lp6TnIi1v71dx/w8gn+syGCcTGiPto80jru6O88+YSu8SYZaKWA==
   dependencies:
     "@blackglory/prelude" "^0.4.0"
     "@blackglory/structures" "^0.14.9"
