@@ -118,7 +118,7 @@ function getPort(options: IOptions): number {
 function getTimeout(options: IOptions): number {
   assert(/^\d+$/.test(options.timeout), 'The parameter timeout must be integer')
 
-  return Number.parseInt(options.port, 10) * 1000
+  return Number.parseInt(options.timeout, 10) * 1000
 }
 
 function getIpWhiltelistFilename(options: IOptions): string {
