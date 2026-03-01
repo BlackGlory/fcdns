@@ -1,10 +1,10 @@
 import { Router, RouteResult } from './router.js'
-import { IServerInfo } from '@utils/parse-server-info.js'
 import { Logger } from 'extra-logger'
 import chalk from 'chalk'
 import { go } from '@blackglory/prelude'
 import { DNSClient, DNSServer, IPacket, IQuestion, QR, RCODE, TYPE } from 'extra-dns'
 import { timeoutSignal } from 'extra-abort'
+import { IServerInfo } from './types.js'
 
 interface IStartServerOptions {
   router: Router
@@ -25,8 +25,8 @@ export async function startServer(
   , untrustedServer
   }: IStartServerOptions
 ): Promise<() => Promise<void>> {
-  const trustedClient = new DNSClient(trustedServer.host, trustedServer.port ?? 53)
-  const untrustedClient = new DNSClient(untrustedServer.host, untrustedServer.port ?? 53)
+  const trustedClient = new DNSClient(trustedServer.hostname, trustedServer.port ?? 53)
+  const untrustedClient = new DNSClient(untrustedServer.hostname, untrustedServer.port ?? 53)
   const server = new DNSServer('0.0.0.0', port)
 
   server.on('query', async (query, respond) => {

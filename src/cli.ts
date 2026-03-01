@@ -8,10 +8,11 @@ import { PoisonTester } from './poison-tester.js'
 import { createDNSResolver } from '@utils/create-dns-resolver.js'
 import { assert } from '@blackglory/prelude'
 import { Level, Logger, TerminalTransport, stringToLevel } from 'extra-logger'
-import { IServerInfo, parseServerInfo } from '@utils/parse-server-info.js'
 import { youDied } from 'you-died'
 import * as Database from './database.js'
 import { name, version, description } from '@utils/package.js'
+import { parseHostnamePort } from 'extra-utils'
+import { IServerInfo } from './types.js'
 
 interface IOptions {
   testServer: string
@@ -68,8 +69,12 @@ program
     })
 
     const untrustedResolver = createDNSResolver(
-      untrustedServer.host
-    + (untrustedServer.port ? `:${untrustedServer.port}` : '')
+      untrustedServer.hostname
+    + (
+        untrustedServer.port
+      ? `:${untrustedServer.port}`
+      : ''
+      )
     )
     const ipWhitelist = await IPRanges.fromFile(ipWhitelistFilename)
     const hostnameWhitelist = await Hostnames.fromFile(hostnameWhitelistFilename)
@@ -102,11 +107,11 @@ function getTestServer(options: IOptions): string {
 }
 
 function getUntrustedServer(options: IOptions): IServerInfo {
-  return parseServerInfo(options.untrustedServer)
+  return parseHostnamePort(options.untrustedServer)
 }
 
 function getTrustedServer(options: IOptions): IServerInfo {
-  return parseServerInfo(options.trustedServer)
+  return parseHostnamePort(options.trustedServer)
 }
 
 function getPort(options: IOptions): number {
