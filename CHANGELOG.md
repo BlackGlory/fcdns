@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.8.0](https://github.com/BlackGlory/fcdns/compare/v0.7.3...v0.8.0) (2026-03-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js v18 => Node.js v22
+
+### Bug Fixes
+
+* **cli:** the parameter timeout ([82dbee8](https://github.com/BlackGlory/fcdns/commit/82dbee87394a9af26d9cf56df18c6265073876da))
+
+
+* upgrade dependencies ([6226314](https://github.com/BlackGlory/fcdns/commit/6226314a2da0da994f1da963268220dba115acc6))
+
 ### [0.7.3](https://github.com/BlackGlory/fcdns/compare/v0.7.2...v0.7.3) (2024-12-28)
 
 ### [0.7.2](https://github.com/BlackGlory/fcdns/compare/v0.7.1...v0.7.2) (2024-12-19)
