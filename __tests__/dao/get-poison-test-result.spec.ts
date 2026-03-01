@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach, afterEach } from 'vitest'
 import { getPoisonResult } from '@dao/get-poison-test-result.js'
 import { initializeDatabase, clearDatabase, setRawHostname } from './utils.js'
 import { PoisonTestResult } from '@src/poison-tester.js'

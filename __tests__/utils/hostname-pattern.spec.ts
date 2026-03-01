@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import { HostnamePattern } from '@utils/hostname-pattern.js'
 
 describe('HostnamePattern', () => {

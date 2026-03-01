@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach, afterEach } from 'vitest'
 import { upsertRouteResult } from '@dao/upsert-route-result.js'
 import { initializeDatabase, clearDatabase, getRawHostname, setRawHostname } from './utils.js'
 import { RouteResult } from '@src/router.js'

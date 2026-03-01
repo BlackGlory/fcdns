@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { clear } from '@dao/clear.js'
 import { initializeDatabase, clearDatabase, setRawHostname, hasRawHostname } from './utils.js'
 
