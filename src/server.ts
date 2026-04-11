@@ -5,6 +5,7 @@ import { go } from '@blackglory/prelude'
 import { DNSClient, DNSServer, IPacket, IQuestion, QR, RCODE, TYPE } from 'extra-dns'
 import { timeoutSignal } from 'extra-abort'
 import { IServerInfo } from './types.js'
+import { assertNever } from 'assert-never'
 
 interface IStartServerOptions {
   router: Router
@@ -71,7 +72,7 @@ export async function startServer(
             case RouteResult.TrustedServer: return trustedClient
             case RouteResult.UntrustedServer: return untrustedClient
             case RouteResult.Unresolved: return untrustedClient
-            default: throw new Error('Unknown route result')
+            default: assertNever(result, 'Unknown route result')
           }
         })
 

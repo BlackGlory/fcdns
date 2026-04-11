@@ -7,6 +7,7 @@ import { isntNull } from '@blackglory/prelude'
 import { promises as dns } from 'dns'
 import { getPoisonResult } from '@dao/get-poison-test-result.js'
 import { upsertPoisonTestResult } from '@dao/upsert-poison-test-result.js'
+import { assertNever } from 'assert-never'
 
 export enum PoisonTestResult {
   NotPoisoned = 0
@@ -62,6 +63,6 @@ function poisonTestResultToIsPoisoned(result: PoisonTestResult): boolean {
   switch (result) {
     case PoisonTestResult.Poisoned: return true
     case PoisonTestResult.NotPoisoned: return false
-    default: throw new Error('Unknown poision test result')
+    default: assertNever(result, 'Unknown poision test result')
   }
 }
